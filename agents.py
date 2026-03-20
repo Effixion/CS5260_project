@@ -4,8 +4,9 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
 load_dotenv()
 
-# Connect to your local LiteLLM proxy to safely route to Gemini 1.5 Flash
 llm = ChatOpenAI(
+    # Insert your own API key here 
+    # You can use a gemini API key (Free tier or Free trial)
     api_key="<GEMINI_API_KEY>", 
     base_url="http://0.0.0.0:4000", 
     model="gemini-2.5-flash"
