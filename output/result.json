@@ -1,0 +1,221 @@
+{
+  "profile": {
+    "rows": 432,
+    "columns": 7,
+    "numeric_columns": [
+      "sales",
+      "units",
+      "marketing_spend"
+    ],
+    "categorical_columns": [
+      "month",
+      "region",
+      "category",
+      "product"
+    ],
+    "column_profiles": [
+      {
+        "name": "month",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 12,
+        "sample_values": [
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan"
+        ]
+      },
+      {
+        "name": "region",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 3,
+        "sample_values": [
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia"
+        ]
+      },
+      {
+        "name": "category",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 4,
+        "sample_values": [
+          "Electronics",
+          "Electronics",
+          "Electronics",
+          "Home",
+          "Home"
+        ]
+      },
+      {
+        "name": "product",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 12,
+        "sample_values": [
+          "Phone",
+          "Laptop",
+          "Tablet",
+          "Vacuum",
+          "Air Fryer"
+        ]
+      },
+      {
+        "name": "sales",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 431,
+        "sample_values": [
+          "106669",
+          "85212",
+          "104386",
+          "54370",
+          "57822"
+        ]
+      },
+      {
+        "name": "units",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 295,
+        "sample_values": [
+          "812",
+          "937",
+          "855",
+          "367",
+          "623"
+        ]
+      },
+      {
+        "name": "marketing_spend",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 397,
+        "sample_values": [
+          "5698",
+          "6236",
+          "4939",
+          "6499",
+          "6797"
+        ]
+      }
+    ]
+  },
+  "plot_specs": [
+    {
+      "plot_id": "sales_trend",
+      "chart_type": "line",
+      "title": "Sales Trend Over Time",
+      "x": "month",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Shows the overall business trajectory across the year.",
+      "output_file": "output/sales_trend.png"
+    },
+    {
+      "plot_id": "regional_sales",
+      "chart_type": "bar",
+      "title": "Regional Sales by Month",
+      "x": "month",
+      "y": "sales",
+      "group_by": "region",
+      "rationale": "Compares contribution and momentum across regions.",
+      "output_file": "output/regional_sales.png"
+    },
+    {
+      "plot_id": "category_sales",
+      "chart_type": "bar",
+      "title": "Sales by Category",
+      "x": "category",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Highlights which categories contribute the most revenue.",
+      "output_file": "output/category_sales.png"
+    },
+    {
+      "plot_id": "marketing_vs_sales",
+      "chart_type": "scatter",
+      "title": "Marketing Spend vs Sales",
+      "x": "marketing_spend",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Tests whether higher marketing spend is associated with higher sales.",
+      "output_file": "output/marketing_vs_sales.png"
+    },
+    {
+      "plot_id": "top_products",
+      "chart_type": "bar",
+      "title": "Top Products by Sales",
+      "x": "product",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Shows the best-performing products to support product strategy.",
+      "output_file": "output/top_products.png"
+    }
+  ],
+  "slides": [
+    {
+      "title": "Presentation Goal",
+      "purpose": "Set the context for the deck.",
+      "bullets": [
+        "Goal: Explain annual e-commerce performance",
+        "Audience: senior business managers",
+        "Dataset size: 432 rows and 7 columns"
+      ],
+      "visual": null
+    },
+    {
+      "title": "Overall Sales Trend",
+      "purpose": "Summarize the business trajectory over time.",
+      "bullets": [
+        "Overall sales changed by -5.3% from the first visible month to the last visible month.",
+        "The dataset contains 3 numeric metrics that can support performance analysis."
+      ],
+      "visual": "sales_trend.png"
+    },
+    {
+      "title": "Regional Performance",
+      "purpose": "Compare the strongest markets.",
+      "bullets": [
+        "Top region by revenue: Asia",
+        "Regional comparison helps identify where future investment may have the largest impact."
+      ],
+      "visual": "regional_sales.png"
+    },
+    {
+      "title": "Category Mix",
+      "purpose": "Explain which categories drive the business.",
+      "bullets": [
+        "Top category by revenue: Electronics",
+        "Category concentration can guide inventory and campaign planning."
+      ],
+      "visual": "category_sales.png"
+    },
+    {
+      "title": "Marketing Effectiveness",
+      "purpose": "Evaluate the relationship between spending and results.",
+      "bullets": [
+        "Scatter analysis helps reveal whether higher spend aligns with higher sales.",
+        "A stronger upward pattern suggests marketing is contributing to revenue growth."
+      ],
+      "visual": "marketing_vs_sales.png"
+    },
+    {
+      "title": "Key Takeaways",
+      "purpose": "End with concise recommendations.",
+      "bullets": [
+        "Protect momentum in Asia while improving weaker regions.",
+        "Double down on Electronics while testing cross-sell opportunities.",
+        "Use chart-backed findings to decide next-quarter allocation."
+      ],
+      "visual": null
+    }
+  ],
+  "artifacts": {}
+}
