@@ -1,0 +1,217 @@
+{
+  "profile": {
+    "rows": 432,
+    "columns": 7,
+    "numeric_columns": [
+      "sales",
+      "units",
+      "marketing_spend"
+    ],
+    "categorical_columns": [
+      "month",
+      "region",
+      "category",
+      "product"
+    ],
+    "column_profiles": [
+      {
+        "name": "month",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 12,
+        "sample_values": [
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan"
+        ]
+      },
+      {
+        "name": "region",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 3,
+        "sample_values": [
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia"
+        ]
+      },
+      {
+        "name": "category",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 4,
+        "sample_values": [
+          "Electronics",
+          "Electronics",
+          "Electronics",
+          "Home",
+          "Home"
+        ]
+      },
+      {
+        "name": "product",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "unique_count": 12,
+        "sample_values": [
+          "Phone",
+          "Laptop",
+          "Tablet",
+          "Vacuum",
+          "Air Fryer"
+        ]
+      },
+      {
+        "name": "sales",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 431,
+        "sample_values": [
+          "106669",
+          "85212",
+          "104386",
+          "54370",
+          "57822"
+        ]
+      },
+      {
+        "name": "units",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 295,
+        "sample_values": [
+          "812",
+          "937",
+          "855",
+          "367",
+          "623"
+        ]
+      },
+      {
+        "name": "marketing_spend",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "unique_count": 397,
+        "sample_values": [
+          "5698",
+          "6236",
+          "4939",
+          "6499",
+          "6797"
+        ]
+      }
+    ]
+  },
+  "plot_specs": [
+    {
+      "plot_id": "h1_sales_trend",
+      "chart_type": "line",
+      "title": "H1 Sales Trend (Jan\u2013Jun)",
+      "x": "month",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Executive view of overall first-half momentum and seasonality; anchors the story before breaking down drivers.",
+      "output_file": "output_ai/h1_sales_trend.png"
+    },
+    {
+      "plot_id": "h1_sales_by_region",
+      "chart_type": "bar",
+      "title": "H1 Sales by Region (Jan\u2013Jun)",
+      "x": "region",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Shows which regions contributed most to first-half performance; supports resource reallocation and regional action plans.",
+      "output_file": "output_ai/h1_sales_by_region.png"
+    },
+    {
+      "plot_id": "h1_sales_by_category",
+      "chart_type": "bar",
+      "title": "H1 Sales by Category (Jan\u2013Jun)",
+      "x": "category",
+      "y": "sales",
+      "group_by": null,
+      "rationale": "Identifies category winners/laggards in H1; informs merchandising, pricing, and inventory priorities.",
+      "output_file": "output_ai/h1_sales_by_category.png"
+    },
+    {
+      "plot_id": "h1_marketing_efficiency",
+      "chart_type": "scatter",
+      "title": "Marketing Spend vs Sales (H1)",
+      "x": "marketing_spend",
+      "y": "sales",
+      "group_by": "region",
+      "rationale": "Tests whether higher spend is translating into revenue and highlights regional efficiency differences to guide budget shifts.",
+      "output_file": "output_ai/h1_marketing_efficiency.png"
+    },
+    {
+      "plot_id": "h1_units_vs_sales",
+      "chart_type": "scatter",
+      "title": "Units vs Sales (H1)",
+      "x": "units",
+      "y": "sales",
+      "group_by": "category",
+      "rationale": "Separates price/mix effects from volume effects; reveals whether growth is coming from selling more units or higher average selling price/mix by category.",
+      "output_file": "output_ai/h1_units_vs_sales.png"
+    }
+  ],
+  "slides": [
+    {
+      "title": "H1 performance at a glance",
+      "purpose": "Set the executive context on first-half momentum and where to focus next.",
+      "bullets": [
+        "Summarize Jan\u2013Jun sales trajectory and any inflection points",
+        "Call out best vs weakest months to frame seasonality and pacing",
+        "Preview key driver cuts: region, category, and marketing efficiency"
+      ],
+      "visual": "h1_sales_trend.png"
+    },
+    {
+      "title": "Where growth came from: regions",
+      "purpose": "Identify which regions drove H1 results and where intervention is needed.",
+      "bullets": [
+        "Rank regions by total H1 sales contribution",
+        "Highlight concentration risk if one region dominates",
+        "Recommend actions: double down in top region(s) and diagnose underperformers (channel, assortment, promo)"
+      ],
+      "visual": "h1_sales_by_region.png"
+    },
+    {
+      "title": "What\u2019s selling: category mix",
+      "purpose": "Pinpoint category winners/laggards to guide merchandising and inventory decisions.",
+      "bullets": [
+        "Compare H1 sales across categories to spot leaders and drags",
+        "Use results to prioritize inventory, pricing, and onsite placement",
+        "Flag categories needing turnaround plans (promo strategy, bundling, content, availability)"
+      ],
+      "visual": "h1_sales_by_category.png"
+    },
+    {
+      "title": "Is marketing spend paying off?",
+      "purpose": "Assess spend-to-sales relationship and identify budget reallocation opportunities.",
+      "bullets": [
+        "Check whether higher marketing_spend correlates with higher sales in H1",
+        "Compare efficiency patterns by region to find over/under-invested areas",
+        "Action: shift budget toward regions showing stronger sales response; test/trim where response is weak"
+      ],
+      "visual": "h1_marketing_efficiency.png"
+    },
+    {
+      "title": "H2 priorities & decisions",
+      "purpose": "Convert H1 insights into a focused action plan and asks for leadership.",
+      "bullets": [
+        "Rebalance budgets by regional efficiency; set guardrails and weekly KPIs (sales, units, marketing_spend)",
+        "Prioritize top categories for supply and placement; launch fixes for laggards",
+        "Align on 2\u20133 near-term experiments (promo, pricing, assortment) and owners/timelines"
+      ],
+      "visual": null
+    }
+  ],
+  "artifacts": {},
+  "mode": "ai",
+  "notes": []
+}

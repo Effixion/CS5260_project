@@ -1,0 +1,433 @@
+month,region,category,product,sales,units,marketing_spend
+Jan,Asia,Electronics,Phone,106669,812,5698
+Jan,Asia,Electronics,Laptop,85212,937,6236
+Jan,Asia,Electronics,Tablet,104386,855,4939
+Jan,Asia,Home,Vacuum,54370,367,6499
+Jan,Asia,Home,Air Fryer,57822,623,6797
+Jan,Asia,Home,Blender,59476,509,5240
+Jan,Asia,Fashion,Sneakers,53317,434,5836
+Jan,Asia,Fashion,Jacket,53332,504,5134
+Jan,Asia,Fashion,T-Shirt,61319,652,5894
+Jan,Asia,Beauty,Skincare Set,51730,621,6034
+Jan,Asia,Beauty,Perfume,45655,539,6258
+Jan,Asia,Beauty,Makeup Kit,57105,418,7077
+Jan,Europe,Electronics,Phone,69697,544,4609
+Jan,Europe,Electronics,Laptop,70245,612,4880
+Jan,Europe,Electronics,Tablet,87959,896,4068
+Jan,Europe,Home,Vacuum,49675,426,5325
+Jan,Europe,Home,Air Fryer,47772,323,5093
+Jan,Europe,Home,Blender,59092,414,5550
+Jan,Europe,Fashion,Sneakers,52945,614,5195
+Jan,Europe,Fashion,Jacket,41110,400,4391
+Jan,Europe,Fashion,T-Shirt,44163,319,4777
+Jan,Europe,Beauty,Skincare Set,39371,333,4713
+Jan,Europe,Beauty,Perfume,45626,535,4281
+Jan,Europe,Beauty,Makeup Kit,45266,482,5973
+Jan,North America,Electronics,Phone,94432,729,4412
+Jan,North America,Electronics,Laptop,93338,1095,6003
+Jan,North America,Electronics,Tablet,77117,549,5188
+Jan,North America,Home,Vacuum,54959,650,5771
+Jan,North America,Home,Air Fryer,54865,418,5084
+Jan,North America,Home,Blender,64139,567,5802
+Jan,North America,Fashion,Sneakers,55141,413,4663
+Jan,North America,Fashion,Jacket,55998,488,5634
+Jan,North America,Fashion,T-Shirt,50898,622,5550
+Jan,North America,Beauty,Skincare Set,40014,321,4637
+Jan,North America,Beauty,Perfume,46313,322,5091
+Jan,North America,Beauty,Makeup Kit,45017,338,4948
+Feb,Asia,Electronics,Phone,87232,869,5349
+Feb,Asia,Electronics,Laptop,111406,815,5186
+Feb,Asia,Electronics,Tablet,109755,805,6320
+Feb,Asia,Home,Vacuum,73569,624,5247
+Feb,Asia,Home,Air Fryer,73636,720,6737
+Feb,Asia,Home,Blender,61007,555,5064
+Feb,Asia,Fashion,Sneakers,65671,815,6763
+Feb,Asia,Fashion,Jacket,58130,608,6025
+Feb,Asia,Fashion,T-Shirt,56772,388,5087
+Feb,Asia,Beauty,Skincare Set,53204,411,5575
+Feb,Asia,Beauty,Perfume,60053,407,5672
+Feb,Asia,Beauty,Makeup Kit,52878,523,5404
+Feb,Europe,Electronics,Phone,71746,584,4569
+Feb,Europe,Electronics,Laptop,72091,724,5005
+Feb,Europe,Electronics,Tablet,76534,849,5816
+Feb,Europe,Home,Vacuum,62773,647,4978
+Feb,Europe,Home,Air Fryer,59245,613,5344
+Feb,Europe,Home,Blender,53042,426,5456
+Feb,Europe,Fashion,Sneakers,50119,580,5267
+Feb,Europe,Fashion,Jacket,47072,505,5670
+Feb,Europe,Fashion,T-Shirt,50900,399,4081
+Feb,Europe,Beauty,Skincare Set,44252,461,4033
+Feb,Europe,Beauty,Perfume,39997,311,5290
+Feb,Europe,Beauty,Makeup Kit,49602,553,4773
+Feb,North America,Electronics,Phone,80911,559,5150
+Feb,North America,Electronics,Laptop,84665,670,6330
+Feb,North America,Electronics,Tablet,92390,789,6197
+Feb,North America,Home,Vacuum,53588,375,4932
+Feb,North America,Home,Air Fryer,62943,606,6380
+Feb,North America,Home,Blender,64552,452,5168
+Feb,North America,Fashion,Sneakers,58937,471,6351
+Feb,North America,Fashion,Jacket,49297,344,4585
+Feb,North America,Fashion,T-Shirt,46920,538,5734
+Feb,North America,Beauty,Skincare Set,41650,456,5859
+Feb,North America,Beauty,Perfume,51169,407,5607
+Feb,North America,Beauty,Makeup Kit,51450,532,4893
+Mar,Asia,Electronics,Phone,109915,875,5580
+Mar,Asia,Electronics,Laptop,107308,895,6838
+Mar,Asia,Electronics,Tablet,98802,1002,5024
+Mar,Asia,Home,Vacuum,77707,722,5385
+Mar,Asia,Home,Air Fryer,71020,523,6940
+Mar,Asia,Home,Blender,69960,611,6006
+Mar,Asia,Fashion,Sneakers,65526,657,5268
+Mar,Asia,Fashion,Jacket,64171,694,4858
+Mar,Asia,Fashion,T-Shirt,69600,483,7057
+Mar,Asia,Beauty,Skincare Set,47183,325,5688
+Mar,Asia,Beauty,Perfume,62066,420,5827
+Mar,Asia,Beauty,Makeup Kit,51548,481,6847
+Mar,Europe,Electronics,Phone,81093,882,5702
+Mar,Europe,Electronics,Laptop,96233,747,5113
+Mar,Europe,Electronics,Tablet,75721,615,5140
+Mar,Europe,Home,Vacuum,51180,440,5980
+Mar,Europe,Home,Air Fryer,60970,473,5754
+Mar,Europe,Home,Blender,54756,544,5404
+Mar,Europe,Fashion,Sneakers,55891,397,5618
+Mar,Europe,Fashion,Jacket,51508,447,5826
+Mar,Europe,Fashion,T-Shirt,53541,414,5596
+Mar,Europe,Beauty,Skincare Set,50722,489,5591
+Mar,Europe,Beauty,Perfume,40343,334,4751
+Mar,Europe,Beauty,Makeup Kit,45188,382,4071
+Mar,North America,Electronics,Phone,96569,1175,5030
+Mar,North America,Electronics,Laptop,102802,977,4482
+Mar,North America,Electronics,Tablet,94725,707,4679
+Mar,North America,Home,Vacuum,64954,755,4874
+Mar,North America,Home,Air Fryer,63313,537,4513
+Mar,North America,Home,Blender,66804,450,5802
+Mar,North America,Fashion,Sneakers,53619,395,5535
+Mar,North America,Fashion,Jacket,55491,649,4995
+Mar,North America,Fashion,T-Shirt,63941,461,4455
+Mar,North America,Beauty,Skincare Set,48895,530,5931
+Mar,North America,Beauty,Perfume,46618,393,4744
+Mar,North America,Beauty,Makeup Kit,52498,527,5972
+Apr,Asia,Electronics,Phone,111015,934,7091
+Apr,Asia,Electronics,Laptop,101562,1043,6268
+Apr,Asia,Electronics,Tablet,111608,1377,5654
+Apr,Asia,Home,Vacuum,60310,727,5078
+Apr,Asia,Home,Air Fryer,73332,647,6853
+Apr,Asia,Home,Blender,69133,611,5034
+Apr,Asia,Fashion,Sneakers,61191,567,5215
+Apr,Asia,Fashion,Jacket,64777,778,6278
+Apr,Asia,Fashion,T-Shirt,64612,560,5699
+Apr,Asia,Beauty,Skincare Set,57953,634,6855
+Apr,Asia,Beauty,Perfume,57695,704,4969
+Apr,Asia,Beauty,Makeup Kit,62413,518,6205
+Apr,Europe,Electronics,Phone,90171,804,4776
+Apr,Europe,Electronics,Laptop,97551,911,5091
+Apr,Europe,Electronics,Tablet,96657,1031,5922
+Apr,Europe,Home,Vacuum,51162,629,4138
+Apr,Europe,Home,Air Fryer,60769,715,4188
+Apr,Europe,Home,Blender,63440,777,4637
+Apr,Europe,Fashion,Sneakers,48735,552,5628
+Apr,Europe,Fashion,Jacket,53889,381,5393
+Apr,Europe,Fashion,T-Shirt,56481,566,5470
+Apr,Europe,Beauty,Skincare Set,49508,362,4354
+Apr,Europe,Beauty,Perfume,45046,424,5981
+Apr,Europe,Beauty,Makeup Kit,44098,303,5552
+Apr,North America,Electronics,Phone,93354,704,6288
+Apr,North America,Electronics,Laptop,84482,590,6059
+Apr,North America,Electronics,Tablet,104175,1017,5511
+Apr,North America,Home,Vacuum,61514,761,6370
+Apr,North America,Home,Air Fryer,56106,548,6391
+Apr,North America,Home,Blender,71703,596,6490
+Apr,North America,Fashion,Sneakers,56330,560,5790
+Apr,North America,Fashion,Jacket,59990,452,5123
+Apr,North America,Fashion,T-Shirt,61903,716,6141
+Apr,North America,Beauty,Skincare Set,44395,374,5487
+Apr,North America,Beauty,Perfume,56449,539,5371
+Apr,North America,Beauty,Makeup Kit,45636,342,4657
+May,Asia,Electronics,Phone,90981,1059,6283
+May,Asia,Electronics,Laptop,90149,655,6482
+May,Asia,Electronics,Tablet,90401,1051,6494
+May,Asia,Home,Vacuum,65996,622,7167
+May,Asia,Home,Air Fryer,77203,518,6750
+May,Asia,Home,Blender,66035,769,6608
+May,Asia,Fashion,Sneakers,62638,571,6665
+May,Asia,Fashion,Jacket,54766,478,6975
+May,Asia,Fashion,T-Shirt,61058,727,4827
+May,Asia,Beauty,Skincare Set,48780,388,5085
+May,Asia,Beauty,Perfume,56069,380,6590
+May,Asia,Beauty,Makeup Kit,51411,365,5699
+May,Europe,Electronics,Phone,96895,1198,4447
+May,Europe,Electronics,Laptop,74400,522,5939
+May,Europe,Electronics,Tablet,97622,1146,5055
+May,Europe,Home,Vacuum,64695,554,5107
+May,Europe,Home,Air Fryer,60237,538,5258
+May,Europe,Home,Blender,58420,408,5255
+May,Europe,Fashion,Sneakers,48128,328,4090
+May,Europe,Fashion,Jacket,50691,410,5780
+May,Europe,Fashion,T-Shirt,46766,415,4554
+May,Europe,Beauty,Skincare Set,46728,546,4706
+May,Europe,Beauty,Perfume,51977,403,5948
+May,Europe,Beauty,Makeup Kit,43153,315,5072
+May,North America,Electronics,Phone,85053,591,5906
+May,North America,Electronics,Laptop,106223,812,6209
+May,North America,Electronics,Tablet,91928,632,5749
+May,North America,Home,Vacuum,54597,667,6305
+May,North America,Home,Air Fryer,68319,458,5228
+May,North America,Home,Blender,64438,604,4730
+May,North America,Fashion,Sneakers,61996,447,6533
+May,North America,Fashion,Jacket,55101,555,5431
+May,North America,Fashion,T-Shirt,62361,455,4524
+May,North America,Beauty,Skincare Set,57324,482,6599
+May,North America,Beauty,Perfume,56580,405,6091
+May,North America,Beauty,Makeup Kit,49491,555,4944
+Jun,Asia,Electronics,Phone,102235,1064,7089
+Jun,Asia,Electronics,Laptop,102573,976,6412
+Jun,Asia,Electronics,Tablet,104089,894,5072
+Jun,Asia,Home,Vacuum,66531,476,6653
+Jun,Asia,Home,Air Fryer,67301,476,6124
+Jun,Asia,Home,Blender,59232,722,5768
+Jun,Asia,Fashion,Sneakers,61581,476,6612
+Jun,Asia,Fashion,Jacket,53349,658,5311
+Jun,Asia,Fashion,T-Shirt,61064,568,5641
+Jun,Asia,Beauty,Skincare Set,59030,565,5849
+Jun,Asia,Beauty,Perfume,57208,530,6033
+Jun,Asia,Beauty,Makeup Kit,58398,398,6293
+Jun,Europe,Electronics,Phone,92765,810,4294
+Jun,Europe,Electronics,Laptop,81722,549,4516
+Jun,Europe,Electronics,Tablet,78641,632,4985
+Jun,Europe,Home,Vacuum,48444,544,4480
+Jun,Europe,Home,Air Fryer,49642,553,4256
+Jun,Europe,Home,Blender,50114,480,5281
+Jun,Europe,Fashion,Sneakers,49243,388,5793
+Jun,Europe,Fashion,Jacket,45250,546,4344
+Jun,Europe,Fashion,T-Shirt,46474,503,4337
+Jun,Europe,Beauty,Skincare Set,39320,350,4177
+Jun,Europe,Beauty,Perfume,42389,367,4412
+Jun,Europe,Beauty,Makeup Kit,38295,281,5380
+Jun,North America,Electronics,Phone,80087,567,5781
+Jun,North America,Electronics,Laptop,79549,800,6425
+Jun,North America,Electronics,Tablet,97407,1048,6173
+Jun,North America,Home,Vacuum,58393,512,4860
+Jun,North America,Home,Air Fryer,58366,519,5760
+Jun,North America,Home,Blender,52610,538,6044
+Jun,North America,Fashion,Sneakers,60736,524,5969
+Jun,North America,Fashion,Jacket,48448,435,5570
+Jun,North America,Fashion,T-Shirt,50558,511,5571
+Jun,North America,Beauty,Skincare Set,41858,408,5230
+Jun,North America,Beauty,Perfume,46119,521,4865
+Jun,North America,Beauty,Makeup Kit,49807,390,6359
+Jul,Asia,Electronics,Phone,94457,1097,6694
+Jul,Asia,Electronics,Laptop,96844,732,6089
+Jul,Asia,Electronics,Tablet,84444,845,5835
+Jul,Asia,Home,Vacuum,65626,547,5671
+Jul,Asia,Home,Air Fryer,71757,586,5654
+Jul,Asia,Home,Blender,55832,615,5369
+Jul,Asia,Fashion,Sneakers,51203,550,5390
+Jul,Asia,Fashion,Jacket,51408,360,5484
+Jul,Asia,Fashion,T-Shirt,57097,525,4992
+Jul,Asia,Beauty,Skincare Set,44813,415,7157
+Jul,Asia,Beauty,Perfume,55663,405,7126
+Jul,Asia,Beauty,Makeup Kit,45660,360,5418
+Jul,Europe,Electronics,Phone,80027,666,5858
+Jul,Europe,Electronics,Laptop,84813,911,4559
+Jul,Europe,Electronics,Tablet,77072,667,4647
+Jul,Europe,Home,Vacuum,46722,380,4484
+Jul,Europe,Home,Air Fryer,53718,591,4577
+Jul,Europe,Home,Blender,52988,633,4962
+Jul,Europe,Fashion,Sneakers,42314,501,4673
+Jul,Europe,Fashion,Jacket,44851,328,5979
+Jul,Europe,Fashion,T-Shirt,49700,373,4509
+Jul,Europe,Beauty,Skincare Set,41658,382,5191
+Jul,Europe,Beauty,Perfume,47154,341,4697
+Jul,Europe,Beauty,Makeup Kit,37491,285,5930
+Jul,North America,Electronics,Phone,78735,930,6464
+Jul,North America,Electronics,Laptop,88468,636,6030
+Jul,North America,Electronics,Tablet,93932,998,4707
+Jul,North America,Home,Vacuum,52210,381,4760
+Jul,North America,Home,Air Fryer,58130,552,5863
+Jul,North America,Home,Blender,55975,408,6329
+Jul,North America,Fashion,Sneakers,50147,446,5366
+Jul,North America,Fashion,Jacket,55651,483,5063
+Jul,North America,Fashion,T-Shirt,57908,541,4910
+Jul,North America,Beauty,Skincare Set,51565,416,5595
+Jul,North America,Beauty,Perfume,52005,419,4657
+Jul,North America,Beauty,Makeup Kit,41438,305,5136
+Aug,Asia,Electronics,Phone,90633,635,6288
+Aug,Asia,Electronics,Laptop,80840,793,6692
+Aug,Asia,Electronics,Tablet,96032,1166,5396
+Aug,Asia,Home,Vacuum,64338,455,6167
+Aug,Asia,Home,Air Fryer,65343,744,5620
+Aug,Asia,Home,Blender,53480,496,6831
+Aug,Asia,Fashion,Sneakers,48477,504,6713
+Aug,Asia,Fashion,Jacket,57251,458,6533
+Aug,Asia,Fashion,T-Shirt,54522,558,6465
+Aug,Asia,Beauty,Skincare Set,43524,303,5629
+Aug,Asia,Beauty,Perfume,46523,414,6200
+Aug,Asia,Beauty,Makeup Kit,43137,356,7073
+Aug,Europe,Electronics,Phone,77194,949,5011
+Aug,Europe,Electronics,Laptop,84049,702,5744
+Aug,Europe,Electronics,Tablet,83843,647,5393
+Aug,Europe,Home,Vacuum,50962,416,4305
+Aug,Europe,Home,Air Fryer,53244,366,4848
+Aug,Europe,Home,Blender,49174,559,5851
+Aug,Europe,Fashion,Sneakers,49233,554,5969
+Aug,Europe,Fashion,Jacket,49631,426,5841
+Aug,Europe,Fashion,T-Shirt,43592,519,5182
+Aug,Europe,Beauty,Skincare Set,43352,539,4670
+Aug,Europe,Beauty,Perfume,38739,329,4666
+Aug,Europe,Beauty,Makeup Kit,38148,365,5839
+Aug,North America,Electronics,Phone,81170,847,6022
+Aug,North America,Electronics,Laptop,73849,799,5395
+Aug,North America,Electronics,Tablet,80387,558,5496
+Aug,North America,Home,Vacuum,56125,451,5197
+Aug,North America,Home,Air Fryer,57425,621,4428
+Aug,North America,Home,Blender,49355,452,6514
+Aug,North America,Fashion,Sneakers,56385,489,4587
+Aug,North America,Fashion,Jacket,43268,326,5709
+Aug,North America,Fashion,T-Shirt,54991,582,4861
+Aug,North America,Beauty,Skincare Set,38078,336,4819
+Aug,North America,Beauty,Perfume,38443,286,5642
+Aug,North America,Beauty,Makeup Kit,44195,398,5397
+Sep,Asia,Electronics,Phone,87786,966,5761
+Sep,Asia,Electronics,Laptop,95238,651,5236
+Sep,Asia,Electronics,Tablet,80662,644,5695
+Sep,Asia,Home,Vacuum,49740,547,5780
+Sep,Asia,Home,Air Fryer,60156,734,6518
+Sep,Asia,Home,Blender,53122,418,5332
+Sep,Asia,Fashion,Sneakers,45931,337,4847
+Sep,Asia,Fashion,Jacket,54049,559,5228
+Sep,Asia,Fashion,T-Shirt,47989,367,5038
+Sep,Asia,Beauty,Skincare Set,50378,467,6853
+Sep,Asia,Beauty,Perfume,42154,419,6403
+Sep,Asia,Beauty,Makeup Kit,39629,460,6951
+Sep,Europe,Electronics,Phone,62199,670,4415
+Sep,Europe,Electronics,Laptop,70315,493,5166
+Sep,Europe,Electronics,Tablet,68679,699,5634
+Sep,Europe,Home,Vacuum,49190,498,4759
+Sep,Europe,Home,Air Fryer,46712,393,5248
+Sep,Europe,Home,Blender,45137,308,4872
+Sep,Europe,Fashion,Sneakers,38720,275,5527
+Sep,Europe,Fashion,Jacket,48023,353,4974
+Sep,Europe,Fashion,T-Shirt,37269,377,4850
+Sep,Europe,Beauty,Skincare Set,39825,406,5083
+Sep,Europe,Beauty,Perfume,42033,282,4278
+Sep,Europe,Beauty,Makeup Kit,34764,350,5051
+Sep,North America,Electronics,Phone,88488,1002,4440
+Sep,North America,Electronics,Laptop,74015,623,5668
+Sep,North America,Electronics,Tablet,86577,916,5833
+Sep,North America,Home,Vacuum,47276,330,4424
+Sep,North America,Home,Air Fryer,54216,444,6322
+Sep,North America,Home,Blender,47856,332,5863
+Sep,North America,Fashion,Sneakers,45888,394,5321
+Sep,North America,Fashion,Jacket,42947,326,4503
+Sep,North America,Fashion,T-Shirt,48872,502,4582
+Sep,North America,Beauty,Skincare Set,39651,377,5256
+Sep,North America,Beauty,Perfume,39752,332,5981
+Sep,North America,Beauty,Makeup Kit,44172,303,5447
+Oct,Asia,Electronics,Phone,78123,950,6558
+Oct,Asia,Electronics,Laptop,87360,1044,5429
+Oct,Asia,Electronics,Tablet,87403,845,5991
+Oct,Asia,Home,Vacuum,50326,590,6650
+Oct,Asia,Home,Air Fryer,56626,441,6547
+Oct,Asia,Home,Blender,52591,382,5843
+Oct,Asia,Fashion,Sneakers,53868,543,6718
+Oct,Asia,Fashion,Jacket,49002,567,6216
+Oct,Asia,Fashion,T-Shirt,45734,312,7001
+Oct,Asia,Beauty,Skincare Set,41279,350,5870
+Oct,Asia,Beauty,Perfume,48369,354,6895
+Oct,Asia,Beauty,Makeup Kit,47851,343,6381
+Oct,Europe,Electronics,Phone,70660,740,4499
+Oct,Europe,Electronics,Laptop,79867,965,5975
+Oct,Europe,Electronics,Tablet,79486,858,5411
+Oct,Europe,Home,Vacuum,52859,641,5135
+Oct,Europe,Home,Air Fryer,44514,307,5394
+Oct,Europe,Home,Blender,53247,470,5942
+Oct,Europe,Fashion,Sneakers,46711,456,5724
+Oct,Europe,Fashion,Jacket,36899,303,5657
+Oct,Europe,Fashion,T-Shirt,37914,444,4460
+Oct,Europe,Beauty,Skincare Set,36070,275,5392
+Oct,Europe,Beauty,Perfume,35805,304,4130
+Oct,Europe,Beauty,Makeup Kit,35842,289,5581
+Oct,North America,Electronics,Phone,80543,836,6349
+Oct,North America,Electronics,Laptop,86206,1057,4453
+Oct,North America,Electronics,Tablet,78607,539,6324
+Oct,North America,Home,Vacuum,59369,567,6157
+Oct,North America,Home,Air Fryer,50518,444,6087
+Oct,North America,Home,Blender,57524,386,5780
+Oct,North America,Fashion,Sneakers,45678,417,6090
+Oct,North America,Fashion,Jacket,43286,493,6022
+Oct,North America,Fashion,T-Shirt,43933,436,5180
+Oct,North America,Beauty,Skincare Set,36140,444,4913
+Oct,North America,Beauty,Perfume,40721,380,6572
+Oct,North America,Beauty,Makeup Kit,38232,260,5895
+Nov,Asia,Electronics,Phone,76190,697,6687
+Nov,Asia,Electronics,Laptop,97283,863,6909
+Nov,Asia,Electronics,Tablet,78104,522,6272
+Nov,Asia,Home,Vacuum,64823,516,5356
+Nov,Asia,Home,Air Fryer,57752,600,6258
+Nov,Asia,Home,Blender,52948,569,5223
+Nov,Asia,Fashion,Sneakers,49571,589,6671
+Nov,Asia,Fashion,Jacket,57468,396,7125
+Nov,Asia,Fashion,T-Shirt,46964,435,7187
+Nov,Asia,Beauty,Skincare Set,48613,535,6619
+Nov,Asia,Beauty,Perfume,42410,443,6757
+Nov,Asia,Beauty,Makeup Kit,47257,391,6088
+Nov,Europe,Electronics,Phone,79687,808,4182
+Nov,Europe,Electronics,Laptop,79919,544,4259
+Nov,Europe,Electronics,Tablet,78291,622,5724
+Nov,Europe,Home,Vacuum,42294,389,5101
+Nov,Europe,Home,Air Fryer,44661,341,4745
+Nov,Europe,Home,Blender,42213,442,4991
+Nov,Europe,Fashion,Sneakers,37931,271,5366
+Nov,Europe,Fashion,Jacket,42918,353,4990
+Nov,Europe,Fashion,T-Shirt,41281,323,5649
+Nov,Europe,Beauty,Skincare Set,35809,253,5131
+Nov,Europe,Beauty,Perfume,40099,287,5594
+Nov,Europe,Beauty,Makeup Kit,40646,293,5734
+Nov,North America,Electronics,Phone,83195,674,5934
+Nov,North America,Electronics,Laptop,71405,504,6055
+Nov,North America,Electronics,Tablet,68480,496,6318
+Nov,North America,Home,Vacuum,50263,380,4683
+Nov,North America,Home,Air Fryer,57540,416,4753
+Nov,North America,Home,Blender,45309,452,5516
+Nov,North America,Fashion,Sneakers,54000,434,5757
+Nov,North America,Fashion,Jacket,49291,418,4971
+Nov,North America,Fashion,T-Shirt,42142,316,6115
+Nov,North America,Beauty,Skincare Set,47781,459,5590
+Nov,North America,Beauty,Perfume,47407,543,5791
+Nov,North America,Beauty,Makeup Kit,44464,524,6461
+Dec,Asia,Electronics,Phone,95114,1122,5522
+Dec,Asia,Electronics,Laptop,85821,695,6197
+Dec,Asia,Electronics,Tablet,99304,670,4909
+Dec,Asia,Home,Vacuum,64119,719,7125
+Dec,Asia,Home,Air Fryer,51720,634,6619
+Dec,Asia,Home,Blender,59655,445,5576
+Dec,Asia,Fashion,Sneakers,53032,534,6439
+Dec,Asia,Fashion,Jacket,52728,472,7193
+Dec,Asia,Fashion,T-Shirt,58402,454,5192
+Dec,Asia,Beauty,Skincare Set,42166,330,5329
+Dec,Asia,Beauty,Perfume,44778,305,6370
+Dec,Asia,Beauty,Makeup Kit,46954,321,5162
+Dec,Europe,Electronics,Phone,77773,721,4839
+Dec,Europe,Electronics,Laptop,85157,783,4548
+Dec,Europe,Electronics,Tablet,69040,727,5788
+Dec,Europe,Home,Vacuum,52036,491,4062
+Dec,Europe,Home,Air Fryer,49493,334,5728
+Dec,Europe,Home,Blender,55127,410,4371
+Dec,Europe,Fashion,Sneakers,49309,369,5541
+Dec,Europe,Fashion,Jacket,40158,488,5252
+Dec,Europe,Fashion,T-Shirt,46383,341,5841
+Dec,Europe,Beauty,Skincare Set,35537,400,4963
+Dec,Europe,Beauty,Perfume,39105,415,5371
+Dec,Europe,Beauty,Makeup Kit,34931,289,4983
+Dec,North America,Electronics,Phone,89290,877,4991
+Dec,North America,Electronics,Laptop,70810,832,5401
+Dec,North America,Electronics,Tablet,81822,670,5263
+Dec,North America,Home,Vacuum,57918,413,5041
+Dec,North America,Home,Air Fryer,47646,419,6115
+Dec,North America,Home,Blender,50819,340,4630
+Dec,North America,Fashion,Sneakers,49360,400,4713
+Dec,North America,Fashion,Jacket,50217,622,5945
+Dec,North America,Fashion,T-Shirt,49626,576,5118
+Dec,North America,Beauty,Skincare Set,38036,444,5171
+Dec,North America,Beauty,Perfume,39284,328,5273
+Dec,North America,Beauty,Makeup Kit,47659,506,5916
