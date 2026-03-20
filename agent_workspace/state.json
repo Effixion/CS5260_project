@@ -1,0 +1,260 @@
+{
+  "goal": "Explain first-half e-commerce performance and recommend actions",
+  "audience": "senior business managers",
+  "slides_requested": 5,
+  "csv_path": "data/sales_data.csv",
+  "profile": {
+    "n_rows": 432,
+    "n_columns": 7,
+    "columns": [
+      {
+        "name": "month",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "n_unique": 12,
+        "sample_values": [
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan",
+          "Jan"
+        ]
+      },
+      {
+        "name": "region",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "n_unique": 3,
+        "sample_values": [
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia",
+          "Asia"
+        ]
+      },
+      {
+        "name": "category",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "n_unique": 4,
+        "sample_values": [
+          "Electronics",
+          "Electronics",
+          "Electronics",
+          "Home",
+          "Home"
+        ]
+      },
+      {
+        "name": "product",
+        "dtype": "str",
+        "missing_ratio": 0.0,
+        "n_unique": 12,
+        "sample_values": [
+          "Phone",
+          "Laptop",
+          "Tablet",
+          "Vacuum",
+          "Air Fryer"
+        ]
+      },
+      {
+        "name": "sales",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "n_unique": 431,
+        "sample_values": [
+          "106669",
+          "85212",
+          "104386",
+          "54370",
+          "57822"
+        ],
+        "min": 34764.0,
+        "max": 111608.0,
+        "mean": 60525.89351851852
+      },
+      {
+        "name": "units",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "n_unique": 295,
+        "sample_values": [
+          "812",
+          "937",
+          "855",
+          "367",
+          "623"
+        ],
+        "min": 253.0,
+        "max": 1377.0,
+        "mean": 551.9212962962963
+      },
+      {
+        "name": "marketing_spend",
+        "dtype": "int64",
+        "missing_ratio": 0.0,
+        "n_unique": 397,
+        "sample_values": [
+          "5698",
+          "6236",
+          "4939",
+          "6499",
+          "6797"
+        ],
+        "min": 4033.0,
+        "max": 7193.0,
+        "mean": 5544.215277777777
+      }
+    ],
+    "column_names": [
+      "month",
+      "region",
+      "category",
+      "product",
+      "sales",
+      "units",
+      "marketing_spend"
+    ]
+  },
+  "summary": {
+    "n_rows": 432,
+    "columns": [
+      "month",
+      "region",
+      "category",
+      "product",
+      "sales",
+      "units",
+      "marketing_spend"
+    ],
+    "total_sales": 26147186.0,
+    "avg_sales": 60525.89351851852,
+    "sales_by_region": {
+      "Asia": 9509637.0,
+      "North America": 8678384.0,
+      "Europe": 7959165.0
+    },
+    "sales_by_category": {
+      "Electronics": 9407936.0,
+      "Home": 6194950.0,
+      "Fashion": 5594568.0,
+      "Beauty": 4949732.0
+    },
+    "sales_by_month": {
+      "Apr": 2449145.0,
+      "Aug": 2078932.0,
+      "Dec": 2060329.0,
+      "Feb": 2279158.0,
+      "Jan": 2175545.0,
+      "Jul": 2169476.0,
+      "Jun": 2238828.0,
+      "Mar": 2422181.0,
+      "May": 2368610.0,
+      "Nov": 1986409.0,
+      "Oct": 1969163.0,
+      "Sep": 1949410.0
+    }
+  },
+  "plan": {
+    "used_ai": false,
+    "ai_stage": null,
+    "candidate_charts": [],
+    "selected_charts": [],
+    "selection_mode": "rule_based",
+    "user_feedback": "For slide 5, add more key takeaways",
+    "ai_error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+  },
+  "slides": [
+    {
+      "title": "Business Overview",
+      "bullets": [
+        "Explain first-half e-commerce performance and recommend actions",
+        "Dataset rows: 432",
+        "Columns analyzed: 7"
+      ],
+      "chart_id": null
+    },
+    {
+      "title": "Sales Trend",
+      "bullets": [
+        "Sales trend over time is the main performance signal.",
+        "Use this to spot seasonality and momentum.",
+        "Track whether growth is consistent."
+      ],
+      "chart_id": "sales_trend"
+    },
+    {
+      "title": "Sales by Region",
+      "bullets": [
+        "Regional mix highlights where growth is concentrated.",
+        "Compare relative strength across markets.",
+        "Useful for resource allocation decisions."
+      ],
+      "chart_id": "region_sales"
+    },
+    {
+      "title": "Sales by Category",
+      "bullets": [
+        "Category mix shows which product lines matter most.",
+        "Supports merchandising and inventory prioritization.",
+        "Useful for portfolio strategy."
+      ],
+      "chart_id": "category_sales"
+    },
+    {
+      "title": "Key Takeaways & Recommended Actions (H1)",
+      "bullets": [
+        "H1 performance peaked in Mar–May (highest month: Apr ~$2.45M) and softened through Sep–Oct (~$1.95–$1.97M); plan demand-gen to counter the mid-year dip.",
+        "Asia is the largest region (~$9.51M total), ahead of North America (~$8.68M) and Europe (~$7.96M); prioritize retention and expansion plays in Asia while targeting selective growth in NA.",
+        "Electronics is the top category (~$9.41M) and the primary revenue lever; protect availability and launch cadence here to defend share.",
+        "Home and Fashion are meaningful second-tier growth pools (~$6.19M and ~$5.59M); use targeted promos/bundles to lift conversion without over-discounting.",
+        "Beauty is the smallest category (~$4.95M); refine assortment and shift spend toward highest-ROI SKUs rather than broad campaigns.",
+        "Action: reallocate marketing and inventory toward Electronics + Asia in the next cycle, and run month-specific campaigns to smooth the late-summer/fall slowdown."
+      ],
+      "chart_id": null
+    }
+  ],
+  "rendered_charts": [
+    {
+      "id": "sales_trend",
+      "path": "agent_workspace/plots/sales_trend.png",
+      "title": "Sales Trend"
+    },
+    {
+      "id": "region_sales",
+      "path": "agent_workspace/plots/region_sales.png",
+      "title": "Sales by Region"
+    },
+    {
+      "id": "category_sales",
+      "path": "agent_workspace/plots/category_sales.png",
+      "title": "Sales by Category"
+    },
+    {
+      "id": "marketing_scatter",
+      "path": "agent_workspace/plots/marketing_scatter.png",
+      "title": "Marketing vs Sales"
+    }
+  ],
+  "history": [
+    {
+      "role": "user",
+      "content": "For slide 5, add more key takeaways"
+    },
+    {
+      "role": "assistant",
+      "content": "Updated slide 5."
+    },
+    {
+      "role": "user",
+      "content": "for slide 5, add more key takeaways"
+    },
+    {
+      "role": "assistant",
+      "content": "Updated slide 5."
+    }
+  ],
+  "last_feedback": "for slide 5, add more key takeaways"
+}

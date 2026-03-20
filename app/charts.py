@@ -1,62 +1,47 @@
 from __future__ import annotations
-
 import os
-import pandas as pd
 import matplotlib.pyplot as plt
-from .schemas import PlotSpec
-
-MONTH_ORDER = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
-
-def _ordered_series(series: pd.Series) -> pd.Series:
-    idx = [m for m in MONTH_ORDER if m in series.index]
-    if idx:
-        return series.reindex(idx).dropna()
-    return series
-
-
-def render_plot(df: pd.DataFrame, spec: PlotSpec) -> str:
-    os.makedirs(os.path.dirname(spec.output_file), exist_ok=True)
-    plt.figure(figsize=(8, 4.5))
-
-    if spec.chart_type == "line":
-        grouped = df.groupby(spec.x)[spec.y].sum()
-        grouped = _ordered_series(grouped)
-        plt.plot(grouped.index, grouped.values, marker="o")
-        plt.xlabel(spec.x)
-        plt.ylabel(spec.y)
-        plt.title(spec.title)
-
-    elif spec.chart_type == "bar":
-        if spec.group_by:
-            grouped = df.pivot_table(index=spec.x, columns=spec.group_by, values=spec.y, aggfunc="sum", fill_value=0)
-            ordered_idx = [m for m in MONTH_ORDER if m in grouped.index]
-            if ordered_idx:
-                grouped = grouped.reindex(ordered_idx)
-            grouped.plot(kind="bar", ax=plt.gca())
-            plt.xlabel(spec.x)
-            plt.ylabel(spec.y)
-            plt.title(spec.title)
-        else:
-            grouped = df.groupby(spec.x)[spec.y].sum().sort_values(ascending=False)
-            if spec.plot_id == "top_products":
-                grouped = grouped.head(10)
-            grouped.plot(kind="bar", ax=plt.gca())
-            plt.xlabel(spec.x)
-            plt.ylabel(spec.y)
-            plt.title(spec.title)
-            plt.xticks(rotation=30, ha="right")
-
-    elif spec.chart_type == "scatter":
-        plt.scatter(df[spec.x], df[spec.y], alpha=0.7)
-        plt.xlabel(spec.x)
-        plt.ylabel(spec.y)
-        plt.title(spec.title)
-
+import pandas as pd
+MONTH_ORDER=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+def _ordered(df,x):
+    if x=="month" and x in df.columns:
+        tmp=df.copy(); tmp[x]=pd.Categorical(tmp[x],categories=MONTH_ORDER,ordered=True); return tmp.sort_values(x)
+    return df
+def generate_line_chart(df,x,y,group_by,title,out_path):
+    plt.figure(figsize=(8,4.5)); work=_ordered(df,x)
+    if group_by:
+        grouped=work.groupby([x,group_by],dropna=False)[y].sum().reset_index()
+        for key,sub in grouped.groupby(group_by): plt.plot(sub[x].astype(str),sub[y],marker="o",label=str(key))
+        plt.legend()
     else:
-        raise ValueError(f"Unsupported chart type: {spec.chart_type}")
-
-    plt.tight_layout()
-    plt.savefig(spec.output_file, dpi=180)
-    plt.close()
-    return spec.output_file
+        grouped=work.groupby(x,dropna=False)[y].sum().reset_index(); plt.plot(grouped[x].astype(str),grouped[y],marker="o")
+    plt.title(title); plt.xlabel(x); plt.ylabel(y); plt.xticks(rotation=45); plt.tight_layout(); plt.savefig(out_path,dpi=160); plt.close()
+def generate_bar_chart(df,x,y,group_by,title,out_path):
+    plt.figure(figsize=(8,4.5)); work=_ordered(df,x)
+    if group_by: work.groupby([x,group_by],dropna=False)[y].sum().unstack(fill_value=0).plot(kind="bar",ax=plt.gca())
+    else: work.groupby(x,dropna=False)[y].sum().plot(kind="bar",ax=plt.gca())
+    plt.title(title); plt.xlabel(x); plt.ylabel(y); plt.xticks(rotation=45); plt.tight_layout(); plt.savefig(out_path,dpi=160); plt.close()
+def generate_stacked_bar_chart(df,x,y,group_by,title,out_path):
+    plt.figure(figsize=(8,4.5)); work=_ordered(df,x); work.groupby([x,group_by],dropna=False)[y].sum().unstack(fill_value=0).plot(kind="bar",stacked=True,ax=plt.gca())
+    plt.title(title); plt.xlabel(x); plt.ylabel(y); plt.xticks(rotation=45); plt.tight_layout(); plt.savefig(out_path,dpi=160); plt.close()
+def generate_scatter_plot(df,x,y,group_by,title,out_path):
+    plt.figure(figsize=(8,4.5))
+    if group_by:
+        for key,sub in df.groupby(group_by): plt.scatter(sub[x],sub[y],label=str(key),alpha=0.8)
+        plt.legend()
+    else: plt.scatter(df[x],df[y],alpha=0.8)
+    plt.title(title); plt.xlabel(x); plt.ylabel(y); plt.tight_layout(); plt.savefig(out_path,dpi=160); plt.close()
+def render_chart_bundle(df,chart_specs,out_dir):
+    os.makedirs(out_dir,exist_ok=True); results=[]
+    for spec in chart_specs:
+        chart_type=spec["chart_type"]; chart_id=spec["id"]; x=spec["x"]; y=spec["y"]; group_by=spec.get("group_by"); out_path=os.path.join(out_dir,f"{chart_id}.png")
+        try:
+            if chart_type=="line": generate_line_chart(df,x,y,group_by,spec["title"],out_path)
+            elif chart_type=="bar": generate_bar_chart(df,x,y,group_by,spec["title"],out_path)
+            elif chart_type=="stacked_bar": generate_stacked_bar_chart(df,x,y,group_by,spec["title"],out_path)
+            elif chart_type=="scatter": generate_scatter_plot(df,x,y,group_by,spec["title"],out_path)
+            else: continue
+            results.append({"id":chart_id,"path":out_path,"title":spec["title"]})
+        except Exception as e:
+            print(f"[WARN] Failed to render {chart_id}: {e}")
+    return results

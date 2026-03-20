@@ -1,10 +1,6 @@
-# Minimal Presentation Agent (AI edition)
+# min_agent_ai_v3
 
-This version adds optional OpenAI-powered planning for:
-- plot selection
-- slide titles and bullets
-
-The plotting and export steps stay deterministic.
+This version adds a simple interactive agent loop with persistent state.
 
 ## Setup
 
@@ -12,21 +8,15 @@ The plotting and export steps stay deterministic.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export OPENAI_API_KEY=your_key_here
+export OPENAI_API_KEY=your_key
 ```
 
-## Run without AI
+## Interactive agent mode
 
 ```bash
-python -m app.pipeline --csv data/sales_data.csv --out output
-```
-
-## Run with AI
-
-```bash
-python -m app.pipeline \
+python -m app.agent \
   --csv data/sales_data.csv \
-  --out output_ai \
+  --workspace agent_workspace \
   --goal "Explain first-half e-commerce performance and recommend actions" \
   --audience "senior business managers" \
   --slides 5 \
@@ -34,17 +24,11 @@ python -m app.pipeline \
   --model gpt-5.2
 ```
 
-## Start API server
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Then open:
-
-- http://127.0.0.1:8000/docs
-
-## Notes
-
-- If AI mode fails, the pipeline falls back to the rule-based planner.
-- AI is only used for planning. Chart rendering and export remain deterministic.
+Then use:
+- `generate`
+- `feedback replace slide 3 with category comparison`
+- `feedback simplify slide 2`
+- `show slides`
+- `show state`
+- `export`
+- `exit`

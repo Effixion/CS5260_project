@@ -1,0 +1,9 @@
+{
+  "used_ai": false,
+  "ai_stage": null,
+  "candidate_charts": [],
+  "selected_charts": [],
+  "selection_mode": "rule_based",
+  "user_feedback": "For slide 5, add more key takeaways",
+  "ai_error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+}

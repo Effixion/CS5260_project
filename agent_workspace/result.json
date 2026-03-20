@@ -1,0 +1,12 @@
+{
+  "csv": "data/sales_data.csv",
+  "goal": "Explain first-half e-commerce performance and recommend actions",
+  "audience": "senior business managers",
+  "slides_requested": 5,
+  "plots_dir": "agent_workspace/plots",
+  "deck_md": "agent_workspace/deck.md",
+  "deck_html": "agent_workspace/deck.html",
+  "plan_json": "agent_workspace/plan.json",
+  "used_ai": false,
+  "selection_mode": "rule_based"
+}
