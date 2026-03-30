@@ -175,6 +175,16 @@ export function useChatStream(projectId: string): UseChatStreamReturn {
   const selectVisualizations = useCallback(
     async (messageId: string, selected: string[]) => {
       if (isStreaming) return;
+
+      // Optimistically mark the visualization picker message as confirmed
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === messageId
+            ? { ...m, metadata: { ...m.metadata, selected, confirmed: true } }
+            : m
+        )
+      );
+
       try {
         const response = await api.selectVisualizationsStream(
           projectId,

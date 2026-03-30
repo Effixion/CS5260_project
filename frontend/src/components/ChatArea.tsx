@@ -17,7 +17,6 @@ export function ChatArea({ projectId, onFocusChange }: ChatAreaProps) {
     messages,
     isStreaming,
     agentStatuses,
-    streamArtifacts,
     projectStatus,
     sendMessage,
     selectVisualizations,
@@ -64,7 +63,6 @@ export function ChatArea({ projectId, onFocusChange }: ChatAreaProps) {
         messages={messages}
         isStreaming={isStreaming}
         agentStatuses={agentStatuses}
-        streamArtifacts={streamArtifacts}
         onVizConfirm={handleVizConfirm}
         onVizViewLarger={handleVizViewLarger}
         onRetry={handleRetry}

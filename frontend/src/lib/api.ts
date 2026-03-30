@@ -47,6 +47,14 @@ export interface MessageArtifact {
   filename: string;
 }
 
+export interface CompilationResult {
+  success: boolean;
+  errors: string[];
+  warnings: string[];
+  overfull_boxes: string[];
+  pdf_url: string | null;
+}
+
 // --- Helpers ---
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -174,5 +182,51 @@ export const api = {
 
   getArtifactUrl(projectId: string, filename: string): string {
     return `${API_BASE}/projects/${projectId}/artifacts/${encodeURIComponent(filename)}`;
+  },
+
+  // --- Editor (Stage 2) ---
+
+  getTexContent(projectId: string): Promise<{ tex_content: string; undo_count: number }> {
+    return request(`/projects/${projectId}/tex`);
+  },
+
+  saveTex(projectId: string, content: string): Promise<{ success: boolean; version: number }> {
+    return request(`/projects/${projectId}/tex`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content }),
+    });
+  },
+
+  compileTex(
+    projectId: string,
+    texContent?: string
+  ): Promise<CompilationResult> {
+    return request(`/projects/${projectId}/compile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tex_content: texContent ?? null }),
+    });
+  },
+
+  editTexStream(
+    projectId: string,
+    instruction: string,
+    currentTex: string,
+    fileRefs?: string[]
+  ): Promise<Response> {
+    return fetch(`${API_BASE}/projects/${projectId}/edit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        instruction,
+        current_tex: currentTex,
+        file_refs: fileRefs,
+      }),
+    });
+  },
+
+  undoTex(projectId: string): Promise<{ tex_content: string; remaining_undos: number }> {
+    return request(`/projects/${projectId}/undo`, { method: "POST" });
   },
 };

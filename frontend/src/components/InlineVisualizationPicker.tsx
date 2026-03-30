@@ -88,7 +88,7 @@ export function InlineVisualizationPicker({
             variant="outline"
             size="sm"
             onClick={() => onViewLarger(messageId)}
-            disabled={confirming}
+            disabled={confirming || !!isStreaming}
           >
             View Larger
           </Button>

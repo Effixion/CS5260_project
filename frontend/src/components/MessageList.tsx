@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FileText, Download, Loader2, Check, RotateCcw, Pencil } from "lucide-react";
-import { api, type Message } from "@/lib/api";
+import { FileText, Loader2, Check, RotateCcw, Pencil } from "lucide-react";
+import type { Message } from "@/lib/api";
 import { InlineVisualizationPicker } from "@/components/InlineVisualizationPicker";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,18 +14,11 @@ import {
 } from "@/components/ui/context-menu";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface StreamArtifact {
-  type: string;
-  url: string;
-  filename?: string;
-}
-
 interface MessageListProps {
   projectId: string;
   messages: Message[];
   isStreaming: boolean;
   agentStatuses: { agent: string; status: string }[];
-  streamArtifacts: StreamArtifact[];
   onVizConfirm: (messageId: string, selected: string[]) => void;
   onVizViewLarger: (messageId: string) => void;
   onRetry: (messageId: string, newContent?: string) => void;
@@ -37,32 +30,6 @@ function FileRefChip({ filename }: { filename: string }) {
       <FileText className="h-3 w-3 shrink-0 opacity-70" />
       <span className="truncate max-w-[150px]">{filename}</span>
     </span>
-  );
-}
-
-function ArtifactCard({
-  projectId,
-  artifact,
-}: {
-  projectId: string;
-  artifact: { type: string; url: string; filename: string };
-}) {
-  const url = api.getArtifactUrl(projectId, artifact.filename);
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-block"
-    >
-      <Card className="transition-colors hover:border-primary-light">
-        <CardContent className="flex items-center gap-2 px-3 py-2">
-          <Download className="h-4 w-4 text-primary" />
-          <span className="text-sm text-foreground">{artifact.filename}</span>
-          <span className="text-xs text-muted-foreground">{artifact.type}</span>
-        </CardContent>
-      </Card>
-    </a>
   );
 }
 
@@ -130,7 +97,6 @@ export function MessageList({
   messages,
   isStreaming,
   agentStatuses,
-  streamArtifacts,
   onVizConfirm,
   onVizViewLarger,
   onRetry,
@@ -198,37 +164,8 @@ export function MessageList({
                 );
               }
 
-              // Artifact message
-              if (msg.content_type === "artifact") {
-                return (
-                  <motion.div
-                    key={msg.id}
-                    variants={messageVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="flex justify-start"
-                  >
-                    <div className="max-w-lg space-y-2">
-                      {msg.content && (
-                        <Card>
-                          <CardContent className="px-4 py-3 text-sm text-foreground">
-                            {msg.content}
-                          </CardContent>
-                        </Card>
-                      )}
-                      <div className="flex flex-wrap gap-2">
-                        {msg.artifacts.map((a) => (
-                          <ArtifactCard
-                            key={a.filename}
-                            projectId={projectId}
-                            artifact={a}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              }
+              // Skip artifact messages — downloads are in the sidebar
+              if (msg.content_type === "artifact") return null;
 
               // Regular text messages
               const isUser = msg.role === "user";
@@ -358,35 +295,6 @@ export function MessageList({
                       </span>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-
-          {/* Artifact downloads — shown when streaming produces artifacts */}
-          {streamArtifacts.length > 0 && !isStreaming && (
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex justify-start"
-            >
-              <Card>
-                <CardContent className="px-4 py-3">
-                  <p className="mb-2 text-xs font-medium text-muted-foreground">Generated Files</p>
-                  <div className="flex flex-wrap gap-2">
-                    {streamArtifacts.map((a) => (
-                      <a
-                        key={a.filename || a.url}
-                        href={api.getArtifactUrl(projectId, a.filename || "")}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-foreground transition-colors hover:border-primary hover:text-primary"
-                      >
-                        <Download className="h-3 w-3" />
-                        {a.filename || a.type}
-                      </a>
-                    ))}
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>

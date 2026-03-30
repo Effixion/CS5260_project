@@ -10,6 +10,7 @@ import {
   Trash2,
   Pencil,
   StickyNote,
+  Download,
 } from "lucide-react";
 import { api, type ProjectFile, type ArtifactFile } from "@/lib/api";
 import { useProject } from "@/contexts/ProjectContext";
@@ -249,18 +250,33 @@ export function FileSidebar() {
                 Generated
               </p>
               {artifacts.map((artifact) => (
-                <div
-                  key={artifact.filename}
-                  className="group flex items-center gap-2 rounded px-2 py-1 hover:bg-background cursor-default"
-                >
-                  <FileIcon filename={artifact.filename} />
-                  <p className="min-w-0 flex-1 truncate text-xs text-foreground">
-                    {artifact.filename}
-                  </p>
-                  <span className="shrink-0 text-[10px] text-muted-foreground">
-                    {formatBytes(artifact.size_bytes)}
-                  </span>
-                </div>
+                <ContextMenu key={artifact.filename}>
+                  <ContextMenuTrigger>
+                    <div className="group flex items-center gap-2 rounded px-2 py-1 hover:bg-background cursor-default">
+                      <FileIcon filename={artifact.filename} />
+                      <p className="min-w-0 flex-1 truncate text-xs text-foreground">
+                        {artifact.filename}
+                      </p>
+                      <span className="shrink-0 text-[10px] text-muted-foreground">
+                        {formatBytes(artifact.size_bytes)}
+                      </span>
+                    </div>
+                  </ContextMenuTrigger>
+                  <ContextMenuContent>
+                    <ContextMenuItem
+                      onClick={() => {
+                        const url = api.getArtifactUrl(projectId!, artifact.filename);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = artifact.filename;
+                        a.click();
+                      }}
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download
+                    </ContextMenuItem>
+                  </ContextMenuContent>
+                </ContextMenu>
               ))}
             </div>
           </>

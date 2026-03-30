@@ -180,12 +180,99 @@ class ProjectManager:
             return []
         artifacts = []
         for p in sorted(self.artifacts_dir.iterdir()):
-            if p.is_file():
+            if p.is_file() and not p.name.startswith("presentation_v"):
                 artifacts.append({
                     "filename": p.name,
                     "size_bytes": p.stat().st_size,
                 })
         return artifacts
+
+    # --- TeX Version History ---
+
+    MAX_TEX_VERSIONS = 20
+
+    @property
+    def tex_history_file(self) -> Path:
+        return self.project_dir / "tex_history.json"
+
+    def _load_tex_history(self) -> dict:
+        if not self.tex_history_file.exists():
+            return {"current_version": 0, "versions": []}
+        return json.loads(self.tex_history_file.read_text())
+
+    def _save_tex_history(self, history: dict) -> None:
+        self.tex_history_file.write_text(json.dumps(history, indent=2))
+
+    def push_tex_version(self, content: str, source: str = "manual_edit", instruction: str = "") -> int:
+        """Save the current tex content as a new version. Returns the new version number."""
+        history = self._load_tex_history()
+        new_version = history["current_version"] + 1
+
+        version_filename = f"presentation_v{new_version}.tex"
+        (self.artifacts_dir / version_filename).write_text(content)
+
+        history["versions"].append({
+            "version": new_version,
+            "filename": version_filename,
+            "source": source,
+            "instruction": instruction,
+            "timestamp": _now_iso(),
+        })
+
+        # Cap at MAX_TEX_VERSIONS — remove oldest
+        if len(history["versions"]) > self.MAX_TEX_VERSIONS:
+            removed = history["versions"].pop(0)
+            old_file = self.artifacts_dir / removed["filename"]
+            if old_file.exists():
+                old_file.unlink()
+
+        history["current_version"] = new_version
+        self._save_tex_history(history)
+
+        # Also save as the main presentation.tex
+        self.save_artifact("presentation.tex", content.encode())
+
+        return new_version
+
+    def undo_tex(self) -> str | None:
+        """Undo to the previous tex version. Returns the restored content, or None if no history."""
+        history = self._load_tex_history()
+        versions = history["versions"]
+        if len(versions) < 2:
+            return None
+
+        # Remove the current version
+        current = versions.pop()
+        current_file = self.artifacts_dir / current["filename"]
+        if current_file.exists():
+            current_file.unlink()
+
+        # Restore the previous version
+        previous = versions[-1]
+        previous_file = self.artifacts_dir / previous["filename"]
+        if not previous_file.exists():
+            return None
+
+        content = previous_file.read_text()
+        history["current_version"] = previous["version"]
+        self._save_tex_history(history)
+
+        # Overwrite presentation.tex with the restored version
+        self.save_artifact("presentation.tex", content.encode())
+
+        return content
+
+    def get_tex_content(self) -> str | None:
+        """Read the current presentation.tex content."""
+        tex_path = self.get_artifact_path("presentation.tex")
+        if not tex_path.exists():
+            return None
+        return tex_path.read_text(errors="ignore")
+
+    def get_undo_count(self) -> int:
+        """Return the number of undos available."""
+        history = self._load_tex_history()
+        return max(0, len(history["versions"]) - 1)
 
 
 class ProjectIndex:

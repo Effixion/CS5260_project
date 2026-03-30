@@ -5,7 +5,7 @@ load_dotenv()
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import projects, files, chat
+from app.routes import projects, files, chat, editor
 
 app = FastAPI(title="Haitham", description="AI-powered presentation generator")
 
@@ -20,6 +20,7 @@ app.add_middleware(
 app.include_router(projects.router)
 app.include_router(files.router)
 app.include_router(chat.router)
+app.include_router(editor.router)
 
 
 @app.get("/health")

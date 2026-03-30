@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import { useProject } from "@/contexts/ProjectContext";
 import { ChatArea } from "@/components/ChatArea";
 import { FocusView } from "@/components/FocusView";
+import { EditorView } from "@/components/EditorView";
 
 export type FocusContent =
   | null
@@ -16,7 +17,7 @@ export default function ProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { loading } = useProject();
+  const { loading, project, artifacts } = useProject();
   const [focusContent, setFocusContent] = useState<FocusContent>(null);
 
   if (loading) {
@@ -25,6 +26,15 @@ export default function ProjectPage({
         Loading project...
       </div>
     );
+  }
+
+  // Auto-transition to editor when presentation.tex is generated and project is completed
+  const hasPresentation = artifacts.some((a) => a.filename === "presentation.tex");
+  const isCompleted = project?.status === "completed";
+  const showEditor = hasPresentation && isCompleted;
+
+  if (showEditor) {
+    return <EditorView projectId={id} />;
   }
 
   return (
