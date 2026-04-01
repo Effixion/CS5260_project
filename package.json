@@ -1,0 +1,9 @@
+{
+  "name": "haitham",
+  "private": true,
+  "scripts": {
+    "dev": "bun run dev:frontend & bun run dev:backend",
+    "dev:frontend": "cd frontend && bun run dev",
+    "dev:backend": "cd backend && .venv/bin/python -m uvicorn app.main:app --reload --port 8000"
+  }
+}

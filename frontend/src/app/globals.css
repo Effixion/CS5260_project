@@ -1,0 +1,209 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ════════════════════════════════════════════════════════════════
+   ACADEMIC PAPER THEME — CUSTOMIZATION
+
+   Change ONLY these two colors to retheme the entire app:
+
+     --base-cream : The warm paper/parchment background
+     --base-blue  : The academic accent color (pastel blue)
+
+   All other colors are derived automatically.
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ═══ BASE COLORS — EDIT THESE ═══ */
+  --base-cream: #f5f0e8;
+  --base-blue: #688fe5;
+
+  /* ═══ Derived: Primary (blue) palette ═══ */
+  --primary: var(--base-blue);
+  --primary-light: color-mix(in oklch, var(--base-blue) 60%, white);
+  --primary-dark: color-mix(in oklch, var(--base-blue) 75%, black);
+  --primary-foreground: #ffffff;
+  --primary-faint: color-mix(in oklch, var(--base-blue) 8%, var(--base-cream));
+
+  /* ═══ Derived: Surface / background palette ═══ */
+  --background: var(--base-cream);
+  --foreground: color-mix(in oklch, var(--base-cream) 12%, #1a1a2e);
+  --surface: color-mix(in oklch, var(--base-cream) 35%, white);
+  --surface-hover: color-mix(in oklch, var(--base-cream) 55%, white);
+
+  /* ═══ Derived: shadcn semantic tokens ═══ */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --secondary: color-mix(in oklch, var(--base-cream) 80%, var(--base-blue));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in oklch, var(--base-cream) 85%, #94a3b8);
+  --muted-foreground: color-mix(in oklch, var(--base-blue) 30%, #64748b);
+  --foreground-muted: var(--muted-foreground);
+  --accent: color-mix(in oklch, var(--base-blue) 10%, var(--base-cream));
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* ═══ Derived: Border / input / ring ═══ */
+  --border: color-mix(in oklch, var(--base-cream) 65%, #94a3b8);
+  --input: color-mix(in oklch, var(--base-cream) 60%, #94a3b8);
+  --ring: var(--primary-light);
+
+  /* ═══ Semantic (fixed) ═══ */
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+
+  /* ═══ Chart colors (academic blues) ═══ */
+  --chart-1: color-mix(in oklch, var(--base-blue) 80%, white);
+  --chart-2: color-mix(in oklch, var(--base-blue) 90%, black);
+  --chart-3: color-mix(in oklch, var(--base-blue) 60%, white);
+  --chart-4: color-mix(in oklch, var(--base-blue) 70%, black);
+  --chart-5: color-mix(in oklch, var(--base-blue) 50%, black);
+
+  /* ═══ Radius ═══ */
+  --radius: 0.625rem;
+
+  /* ═══ Sidebar ═══ */
+  --sidebar: color-mix(in oklch, var(--base-cream) 50%, white);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--base-blue);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: color-mix(in oklch, var(--base-blue) 8%, var(--base-cream));
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@theme inline {
+  /* Primary */
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-faint: var(--primary-faint);
+
+  /* Surfaces */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+
+  /* shadcn tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+
+  /* Border / input / ring */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Semantic */
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Animations */
+  --animate-fade-in-up: fade-in-up 0.3s ease-out;
+  --animate-subtle-pulse: subtle-pulse 2s ease-in-out infinite;
+  --animate-slide-in: slide-in 0.2s ease-out;
+}
+
+/* ═══ Keyframe Animations ═══ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ═══ Subtle paper texture (no image dependency) ═══ */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, color-mix(in oklch, var(--base-cream) 90%, var(--base-blue)) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, color-mix(in oklch, var(--base-cream) 85%, var(--base-blue)) 0%, transparent 50%);
+  opacity: 0.3;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+  html {
+    @apply font-sans;
+  }
+}

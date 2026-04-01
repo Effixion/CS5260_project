@@ -1,0 +1,16 @@
+{
+  "default": {
+    "model": "gemini/gemini-2.5-flash"
+  },
+  "orchestrator": {
+    "model": "gemini/gemini-2.5-flash"
+  },
+  "agents": {
+    "strategist": { "model": "gemini/gemini-2.5-flash" },
+    "data_analyst": { "model": "gemini/gemini-2.5-flash" },
+    "plot_generator": { "model": "gemini/gemini-2.5-flash" },
+    "latex_author": { "model": "gemini/gemini-2.5-flash" },
+    "qa_reviewer": { "model": "gemini/gemini-2.5-flash" },
+    "presenter": { "model": "gemini/gemini-2.5-flash" }
+  }
+}
