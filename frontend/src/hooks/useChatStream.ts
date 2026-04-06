@@ -7,6 +7,7 @@ import { api, type Message } from "@/lib/api";
 interface AgentStatus {
   agent: string;
   status: "running" | "completed" | "error";
+  usage?: any;
 }
 
 interface StreamArtifact {
@@ -102,6 +103,11 @@ export function useChatStream(projectId: string): UseChatStreamReturn {
                   (s) => s.agent === data.agent
                 );
                 const status = data as unknown as AgentStatus;
+
+                if (status.status === "completed" && status.usage) {
+                  console.log(`Tokens for ${status.agent}:`, status.usage);
+                }
+                
                 if (existing >= 0) {
                   const updated = [...prev];
                   updated[existing] = status;
