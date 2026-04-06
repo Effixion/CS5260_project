@@ -83,7 +83,7 @@ Respond with ONLY the complete LaTeX source code. No markdown fences, no explana
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         # Clean up any markdown fences the LLM might have added
         latex_content = result.strip()
@@ -109,7 +109,7 @@ Respond with ONLY the complete LaTeX source code. No markdown fences, no explana
                 "filename": "presentation.pdf",
             })
 
-        return {"artifacts": artifacts}
+        return {"artifacts": artifacts, "usage": usage}
 
     def _compile_pdf(self, manager: ProjectManager):
         """Try to compile presentation.tex to PDF. Returns path if successful, None otherwise."""

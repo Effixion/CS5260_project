@@ -100,7 +100,7 @@ SLIDE-FIT NOTE: These visualizations will be embedded on presentation slides.
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         try:
             analysis = self._parse_json(result)
@@ -117,4 +117,4 @@ SLIDE-FIT NOTE: These visualizations will be embedded on presentation slides.
             json.dumps(analysis, indent=2).encode(),
         )
 
-        return {"analysis": analysis}
+        return {"analysis": analysis, "usage": usage}

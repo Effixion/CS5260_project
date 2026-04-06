@@ -9,8 +9,8 @@
     "strategist": { "model": "gemini/gemini-2.5-flash" },
     "data_analyst": { "model": "gemini/gemini-2.5-flash" },
     "plot_generator": { "model": "gemini/gemini-2.5-flash" },
-    "latex_author": { "model": "gemini/gemini-2.5-flash" },
-    "qa_reviewer": { "model": "gemini/gemini-2.5-flash" },
+    "latex_author": { "model": "gemini/gemini-3.1-pro-preview" },
+    "qa_reviewer": { "model": "gemini/gemini-3.1-pro-preview" },
     "presenter": { "model": "gemini/gemini-2.5-flash" }
   }
 }

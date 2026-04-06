@@ -78,4 +78,15 @@ class BaseAgent(ABC):
             verbose=False,
         )
         result = crew.kickoff()
-        return result.raw
+        
+        usage = {}
+        if hasattr(result, "usage_metrics"):
+            usage = {
+                "total_ tokens": getattr(crew.usage_metrics, "total_tokens", None),
+                "prompt_tokens": getattr(crew.usage_metrics, "prompt_tokens", None),
+                "completion_tokens": getattr(crew.usage_metrics, "completion_tokens", None),
+            }
+        elif hasattr(result, "token_usage"):
+            usage = result.token_usage
+
+        return result.raw, usage

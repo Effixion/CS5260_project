@@ -100,7 +100,7 @@ SLIDE-FIT CONSTRAINTS (these charts will be embedded on Beamer slides):
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         try:
             plot_specs = self._parse_json(result)
@@ -141,7 +141,7 @@ SLIDE-FIT CONSTRAINTS (these charts will be embedded on Beamer slides):
             url = f"/projects/{state['id']}/artifacts/{out_filename}"
             artifacts.append({"type": "candidate_plots", "url": url, "filename": out_filename})
 
-        return {"artifacts": artifacts}
+        return {"artifacts": artifacts, "usage": usage}
 
     def _render_plot(self, df: pd.DataFrame, spec: dict, output_path: Path) -> None:
         """Render a single plot from a specification dict."""

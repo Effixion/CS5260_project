@@ -152,12 +152,14 @@ Respond with ONLY a valid JSON object (no markdown):
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         try:
-            return self._parse_json(result)
+            parsed_result = self._parse_json(result)
         except (json.JSONDecodeError, ValueError):
-            return {"issues": [], "strengths": [], "summary": result[:500]}
+            parsed_result = {"issues": [], "strengths": [], "summary": result[:500]}
+        
+        return parsed_result, usage
 
     # ------------------------------------------------------------------
     # Pass 2: Visual PDF QA (PyMuPDF + VLM)
@@ -188,7 +190,7 @@ Respond with ONLY a valid JSON object (no markdown):
     def _run_visual_qa(self, page_images: list[bytes]) -> dict:
         """Send rendered slide images to a VLM for visual inspection."""
         if not page_images:
-            return {"visual_issues": [], "visual_summary": "No PDF pages to inspect."}
+            return {"visual_issues": [], "visual_summary": "No PDF pages to inspect."}, {}
 
         try:
             from google.genai import types
@@ -199,7 +201,7 @@ Respond with ONLY a valid JSON object (no markdown):
                 return {
                     "visual_issues": [],
                     "visual_summary": "Skipped: GEMINI_API_KEY not set.",
-                }
+                }, {}
 
             client = genai.Client(api_key=api_key)
 
@@ -238,17 +240,23 @@ If all slides look fine, return an empty visual_issues array."""
                 contents=types.Content(role="user", parts=parts),
             )
 
+            vlm_usage = {
+                "total_tokens": response.usage_metadata.total_token_count if response.usage_metadata else 0,
+                "prompt_tokens": response.usage_metadata.prompt_token_count if response.usage_metadata else 0,
+                "completion_tokens": response.usage_metadata.candidates_token_count if response.usage_metadata else 0,
+            }
+
             response_text = response.text or ""
             # Strip markdown fences
             response_text = re.sub(r"^```(?:json)?\s*\n?", "", response_text.strip())
             response_text = re.sub(r"\n?```\s*$", "", response_text.strip())
 
-            return json.loads(response_text)
+            return json.loads(response_text), vlm_usage
 
         except ImportError:
-            return {"visual_issues": [], "visual_summary": "Skipped: google-genai not installed."}
+            return {"visual_issues": [], "visual_summary": "Skipped: google-genai not installed."}, {}
         except Exception as e:
-            return {"visual_issues": [], "visual_summary": f"Visual QA error: {e}"}
+            return {"visual_issues": [], "visual_summary": f"Visual QA error: {e}"}, {}
 
     # ------------------------------------------------------------------
     # Main execute
@@ -288,15 +296,16 @@ If all slides look fine, return an empty visual_issues array."""
             compilation_report += "- Overfull/Underfull boxes:\n" + "\n".join(f"  {o}" for o in compilation["overfull_boxes"]) + "\n"
 
         # --- Pass 1: LaTeX code QA ---
-        latex_qa = self._run_latex_qa(
+        latex_qa, latex_usage = self._run_latex_qa(
             latex_content, brief_block, strategy_block, analysis_block, compilation_report
         )
 
         # --- Pass 2: Visual PDF QA ---
         visual_qa = {"visual_issues": [], "visual_summary": "Skipped: compilation failed."}
+        visual_usage = {}
         if compilation["success"] and compilation["pdf_path"]:
             page_images = self._render_pdf_pages(compilation["pdf_path"])
-            visual_qa = self._run_visual_qa(page_images)
+            visual_qa, visual_usage = self._run_visual_qa(page_images)
 
         # --- Merge results ---
         all_issues = latex_qa.get("issues", [])
@@ -333,4 +342,10 @@ If all slides look fine, return an empty visual_issues array."""
             json.dumps(review, indent=2).encode(),
         )
 
-        return {"review": review}
+        return {
+            "review": review, 
+            "usage": {
+                "latex_qa": latex_usage,
+                "visual_qa": visual_usage
+            }
+        }

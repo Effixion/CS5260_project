@@ -79,7 +79,7 @@ Respond with ONLY a valid JSON object (no markdown, no explanation):
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         try:
             strategy = self._parse_json(result)
@@ -101,4 +101,4 @@ Respond with ONLY a valid JSON object (no markdown, no explanation):
             json.dumps(strategy, indent=2).encode(),
         )
 
-        return {"strategy": strategy}
+        return {"strategy": strategy, "usage": usage}

@@ -76,7 +76,7 @@ Use actual data points and insights from the analysis in the speaker notes.""",
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         # Clean up markdown fences if present
         script = result.strip()
@@ -93,4 +93,4 @@ Use actual data points and insights from the analysis in the speaker notes.""",
             "filename": "presenter_script.txt",
         }]
 
-        return {"artifacts": artifacts}
+        return {"artifacts": artifacts, "usage": usage}
