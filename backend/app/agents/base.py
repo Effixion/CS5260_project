@@ -78,15 +78,21 @@ class BaseAgent(ABC):
             verbose=False,
         )
         result = crew.kickoff()
-        
-        usage = {}
-        if hasattr(result, "usage_metrics"):
-            usage = {
-                "total_ tokens": getattr(crew.usage_metrics, "total_tokens", None),
-                "prompt_tokens": getattr(crew.usage_metrics, "prompt_tokens", None),
-                "completion_tokens": getattr(crew.usage_metrics, "completion_tokens", None),
-            }
-        elif hasattr(result, "token_usage"):
-            usage = result.token_usage
 
-        return result.raw, usage
+        usage_dict = {}
+        
+        # Force conversion to a standard Python dictionary so it is JSON serializable
+        if hasattr(result, "token_usage") and result.token_usage:
+            usage_dict = {
+                "total_tokens": getattr(result.token_usage, "total_tokens", 0),
+                "prompt_tokens": getattr(result.token_usage, "prompt_tokens", 0),
+                "completion_tokens": getattr(result.token_usage, "completion_tokens", 0),
+            }
+        elif hasattr(crew, "usage_metrics") and crew.usage_metrics:
+            usage_dict = {
+                "total_tokens": getattr(crew.usage_metrics, "total_tokens", 0),
+                "prompt_tokens": getattr(crew.usage_metrics, "prompt_tokens", 0),
+                "completion_tokens": getattr(crew.usage_metrics, "completion_tokens", 0),
+            }
+
+        return result.raw, usage_dict
