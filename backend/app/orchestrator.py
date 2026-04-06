@@ -158,8 +158,9 @@ async def _run_agents(
             usage = result.get("usage", {})
             if usage:
                 if agent_name not in project["token_usage"]:
-                    project["token_usage"][agent_name] = usage
+                    project["token_usage"][agent_name] = []
                 project["token_usage"][agent_name].append(usage)
+                
                 manager.save_project(project)
 
             yield {

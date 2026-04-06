@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from crewai import Agent as CrewAgent, Task
+from litellm import cost_per_token
 
 from app.agents.base import BaseAgent
 from app.storage import ProjectManager
@@ -245,6 +246,16 @@ If all slides look fine, return an empty visual_issues array."""
                 "prompt_tokens": response.usage_metadata.prompt_token_count if response.usage_metadata else 0,
                 "completion_tokens": response.usage_metadata.candidates_token_count if response.usage_metadata else 0,
             }
+
+            try:
+                prompt_cost, comp_cost = cost_per_token(
+                    model="gemini/gemini-2.5-flash", # LiteLLM uses provider/model syntax
+                    prompt_tokens=vlm_usage["prompt_tokens"],
+                    completion_tokens=vlm_usage["completion_tokens"]
+                )
+                vlm_usage["cost_usd"] = prompt_cost + comp_cost
+            except Exception:
+                vlm_usage["cost_usd"] = 0.0
 
             response_text = response.text or ""
             # Strip markdown fences

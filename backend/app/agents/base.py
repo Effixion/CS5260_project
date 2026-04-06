@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from crewai import Agent as CrewAgent, Task, Crew, LLM
+from litellm import cost_per_token
 
 from app.storage import ProjectManager
 
@@ -81,18 +82,26 @@ class BaseAgent(ABC):
 
         usage_dict = {}
         
-        # Force conversion to a standard Python dictionary so it is JSON serializable
         if hasattr(result, "token_usage") and result.token_usage:
             usage_dict = {
                 "total_tokens": getattr(result.token_usage, "total_tokens", 0),
                 "prompt_tokens": getattr(result.token_usage, "prompt_tokens", 0),
                 "completion_tokens": getattr(result.token_usage, "completion_tokens", 0),
             }
-        elif hasattr(crew, "usage_metrics") and crew.usage_metrics:
-            usage_dict = {
-                "total_tokens": getattr(crew.usage_metrics, "total_tokens", 0),
-                "prompt_tokens": getattr(crew.usage_metrics, "prompt_tokens", 0),
-                "completion_tokens": getattr(crew.usage_metrics, "completion_tokens", 0),
-            }
+
+        # LiteLLM calculation
+        if usage_dict:
+            try:
+                # You can dynamically pass self.llm.model here!
+                prompt_cost, comp_cost = cost_per_token(
+                    model=self.llm.model, 
+                    prompt_tokens=usage_dict.get("prompt_tokens", 0),
+                    completion_tokens=usage_dict.get("completion_tokens", 0)
+                )
+                usage_dict["cost_usd"] = prompt_cost + comp_cost
+            except Exception as e:
+                # Fallback if LiteLLM doesn't recognize the model name
+                usage_dict["cost_usd"] = 0.0
+                print(f"Cost calculation failed: {e}")
 
         return result.raw, usage_dict
