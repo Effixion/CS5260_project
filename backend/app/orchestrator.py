@@ -133,7 +133,12 @@ async def _run_agents(
     agent_names: list[str],
     factory: AgentFactory,
 ) -> AsyncGenerator[dict, None]:
-    """Run a sequence of agents, yielding SSE events."""
+    """Run a sequence of agents, yielding SSE events and tracking token usage."""
+    
+    project = manager.load_project()
+    if "token_usage" not in project:
+        project["token_usage"] = {}
+    
     for agent_name in agent_names:
         yield {
             "event": "agent_status",
@@ -150,9 +155,16 @@ async def _run_agents(
                     "data": json.dumps(artifact),
                 }
 
+            usage = result.get("usage", {})
+            if usage:
+                if agent_name not in project["token_usage"]:
+                    project["token_usage"][agent_name] = usage
+                project["token_usage"][agent_name].append(usage)
+                manager.save_project(project)
+
             yield {
                 "event": "agent_status",
-                "data": json.dumps({"agent": agent_name, "status": "completed"}),
+                "data": json.dumps({"agent": agent_name, "status": "completed", "usage": usage}),
             }
 
         except Exception as e:
