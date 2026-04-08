@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 
 export function TopBar() {
-  const { project, refreshProject } = useProject();
+  const { project, refreshProject, sessionCost } = useProject();
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
@@ -81,6 +81,11 @@ export function TopBar() {
           <TooltipContent>Click to rename</TooltipContent>
         </Tooltip>
       )}
+
+      {/* The Cost Badge - ml-auto pushes it to the right */}
+      <div className="ml-auto flex items-center bg-green-50 border border-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-mono font-medium shadow-sm">
+        <span>Token Cost: USD${sessionCost.toFixed(3)}</span>
+      </div>
     </div>
   );
 }

@@ -82,7 +82,7 @@ export const api = {
   },
 
   getProject(id: string): Promise<ProjectDetail> {
-    return request(`/projects/${id}`);
+    return request(`/projects/${id}`, { cache: "no-store" });
   },
 
   updateProject(id: string, updates: { name?: string }): Promise<Project> {
