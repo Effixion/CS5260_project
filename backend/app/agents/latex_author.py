@@ -17,9 +17,9 @@ class LatexAuthorAgent(BaseAgent):
     async def execute(self, manager: ProjectManager, state: dict) -> dict[str, Any]:
         strategy = self._read_artifact_json(manager, "strategy.json")
         analysis = self._read_artifact_json(manager, "data_analysis.json")
-        selected_plots = state.get("selected_visualizations", [])
+        selected_plots = state.get("selected_visualizations") or []
 
-        brief = state.get("brief", {})
+        brief = state.get("brief") or {}
         if not brief:
             brief = self._read_artifact_json(manager, "brief.json")
         brief_block = json.dumps(brief, indent=2) if brief else "No brief provided."

@@ -43,6 +43,7 @@ async def get_project(project_id: str):
     project["files"] = manager.list_files()
     project["artifacts"] = manager.list_artifacts()
     project["message_count"] = len(manager.load_messages())
+    project["token_usage"] = project.get("token_usage") or {}
     return project
 
 

@@ -136,7 +136,7 @@ async def _run_agents(
     """Run a sequence of agents, yielding SSE events and tracking token usage."""
     
     project = manager.load_project()
-    if "token_usage" not in project:
+    if not project.get("token_usage"):
         project["token_usage"] = {}
     
     for agent_name in agent_names:
@@ -159,8 +159,9 @@ async def _run_agents(
             if usage:
                 if agent_name not in project["token_usage"]:
                     project["token_usage"][agent_name] = []
+                    
                 project["token_usage"][agent_name].append(usage)
-                
+
                 manager.save_project(project)
 
             yield {

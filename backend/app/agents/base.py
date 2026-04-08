@@ -71,37 +71,47 @@ class BaseAgent(ABC):
         text = text.strip()
         return json.loads(text)
 
-    def _run_crew(self, agent: CrewAgent, task: Task) -> str:
+    def _run_crew(self, agent: CrewAgent, task: Task) -> tuple[str, dict]:
         """Create a single-agent Crew, kick it off, and return the raw result."""
         crew = Crew(
             agents=[agent],
             tasks=[task],
-            verbose=False,
+            # Set to True to track AI progress
+            verbose=True,
         )
-        result = crew.kickoff()
+        # 1. THE SAFETY NET: Catch internal CrewAI/LiteLLM crashes
+        try:
+            result = crew.kickoff()
+        except Exception as e:
+            print(f"\n--- API OR LIBRARY CRASH CAUGHT ---\n{e}\n-----------------------------------")
+            # If the library crashes, return a safe empty string.
+            # Your agents will gracefully fall back to their default JSON/Text 
+            # instead of crashing the whole pipeline!
+            return "", {"cost_usd": 0.0}
 
-        usage_dict = {}
+        # 2. Safe Token Extraction
+        usage_dict = {"cost_usd": 0.0}
         
-        if hasattr(result, "token_usage") and result.token_usage:
-            usage_dict = {
-                "total_tokens": getattr(result.token_usage, "total_tokens", 0),
-                "prompt_tokens": getattr(result.token_usage, "prompt_tokens", 0),
-                "completion_tokens": getattr(result.token_usage, "completion_tokens", 0),
-            }
+        try:
+            # Safely check for token usage without letting the library crash
+            if hasattr(result, "token_usage") and result.token_usage:
+                prompt_tokens = getattr(result.token_usage, "prompt_tokens", 0)
+                comp_tokens = getattr(result.token_usage, "completion_tokens", 0)
+                
+                usage_dict["prompt_tokens"] = prompt_tokens
+                usage_dict["completion_tokens"] = comp_tokens
+                usage_dict["total_tokens"] = getattr(result.token_usage, "total_tokens", 0)
 
-        # LiteLLM calculation
-        if usage_dict:
-            try:
-                # You can dynamically pass self.llm.model here!
+                # Calculate Cost
                 prompt_cost, comp_cost = cost_per_token(
                     model=self.llm.model, 
-                    prompt_tokens=usage_dict.get("prompt_tokens", 0),
-                    completion_tokens=usage_dict.get("completion_tokens", 0)
+                    prompt_tokens=prompt_tokens,
+                    completion_tokens=comp_tokens
                 )
                 usage_dict["cost_usd"] = prompt_cost + comp_cost
-            except Exception as e:
-                # Fallback if LiteLLM doesn't recognize the model name
-                usage_dict["cost_usd"] = 0.0
-                print(f"Cost calculation failed: {e}")
+        except Exception as e:
+            print(f"Token tracking skipped due to API quirk: {e}")
 
-        return result.raw, usage_dict
+        # Ensure we always safely return a string for the result
+        raw_output = result.raw if hasattr(result, "raw") else str(result)
+        return raw_output, usage_dict

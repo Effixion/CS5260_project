@@ -14,8 +14,8 @@ class StrategistAgent(BaseAgent):
         super().__init__(**kwargs)
 
     async def execute(self, manager: ProjectManager, state: dict) -> dict[str, Any]:
-        uploaded_files = state.get("uploaded_files", [])
-        file_contexts = state.get("file_contexts", {})
+        uploaded_files = state.get("uploaded_files") or []
+        file_contexts = state.get("file_contexts") or {}
 
         # Build data summaries
         file_summaries = []
@@ -30,7 +30,7 @@ class StrategistAgent(BaseAgent):
 
         data_block = "\n\n".join(file_summaries) if file_summaries else "No files uploaded yet."
 
-        brief = state.get("brief", {})
+        brief = state.get("brief") or {}
         brief_block = json.dumps(brief, indent=2) if brief else "No brief provided — use sensible defaults."
 
         agent = CrewAgent(
