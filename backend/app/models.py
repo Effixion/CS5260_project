@@ -19,6 +19,7 @@ class Project(BaseModel):
     created_at: str = Field(default_factory=_now_iso)
     updated_at: str = Field(default_factory=_now_iso)
     status: str = "active"  # "active" | "completed"
+    token_usage: dict[str, Any] = Field(default_factory=dict)
 
 
 class ProjectFile(BaseModel):

@@ -8,8 +8,36 @@ interface ProjectContextValue {
   files: ProjectFile[];
   artifacts: ArtifactFile[];
   loading: boolean;
+  sessionCost: number;
+  addSessionCost: (cost: number) => void;
   refreshProject: () => Promise<void>;
   refreshFiles: () => Promise<void>;
+}
+
+// Helper to sum up existing cost from the project's token_usage dictionary
+function calculateInitialCost(projectData: any): number {
+  // If the backend sends null, an empty dict, or no data, safely return 0
+  if (!projectData || !projectData.token_usage || Object.keys(projectData.token_usage).length === 0) {
+    return 0;
+  }
+  
+  let total = 0;
+  
+  // Loop through each agent (e.g., latex_author, strategist)
+  Object.values(projectData.token_usage).forEach((usages: any) => {
+    if (Array.isArray(usages)) {
+      // Loop through every time that agent ran
+      usages.forEach((usage: any) => {
+        if (usage && typeof usage.cost_usd === 'number') {
+          total += usage.cost_usd;
+        } else if (usage && typeof usage.cost === 'number') {
+          total += usage.cost; // Fallback just in case LiteLLM named it differently
+        }
+      });
+    }
+  });
+  
+  return total;
 }
 
 const ProjectContext = createContext<ProjectContextValue | null>(null);
@@ -25,6 +53,11 @@ export function ProjectProvider({
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [artifacts, setArtifacts] = useState<ArtifactFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sessionCost, setSessionCost] = useState(0);
+
+  const addSessionCost = useCallback((cost: number) => {
+    setSessionCost((prev) => prev + cost);
+  }, []);
 
   const refreshProject = useCallback(async () => {
     try {
@@ -32,8 +65,11 @@ export function ProjectProvider({
       setProject(data);
       setFiles(data.files);
       setArtifacts(data.artifacts);
-    } catch {
-      // handle error silently
+      
+      // Calculate and set the persisted cost from the backend!
+      setSessionCost(calculateInitialCost(data)); 
+    } catch (error) {
+      console.error("Failed to fetch project:", error);
     } finally {
       setLoading(false);
     }
@@ -47,8 +83,8 @@ export function ProjectProvider({
       ]);
       setFiles(fileData);
       setArtifacts(projectData.artifacts);
-    } catch {
-      // handle error silently
+    } catch (error) {
+      console.error("Failed to refresh files:", error);
     }
   }, [projectId]);
 
@@ -58,7 +94,16 @@ export function ProjectProvider({
 
   return (
     <ProjectContext.Provider
-      value={{ project, files, artifacts, loading, refreshProject, refreshFiles }}
+      value={{ 
+        project, 
+        files, 
+        artifacts, 
+        loading, 
+        sessionCost, 
+        addSessionCost, 
+        refreshProject, 
+        refreshFiles 
+      }}
     >
       {children}
     </ProjectContext.Provider>

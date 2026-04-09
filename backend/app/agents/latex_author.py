@@ -17,9 +17,9 @@ class LatexAuthorAgent(BaseAgent):
     async def execute(self, manager: ProjectManager, state: dict) -> dict[str, Any]:
         strategy = self._read_artifact_json(manager, "strategy.json")
         analysis = self._read_artifact_json(manager, "data_analysis.json")
-        selected_plots = state.get("selected_visualizations", [])
+        selected_plots = state.get("selected_visualizations") or []
 
-        brief = state.get("brief", {})
+        brief = state.get("brief") or {}
         if not brief:
             brief = self._read_artifact_json(manager, "brief.json")
         brief_block = json.dumps(brief, indent=2) if brief else "No brief provided."
@@ -83,7 +83,7 @@ Respond with ONLY the complete LaTeX source code. No markdown fences, no explana
             agent=agent,
         )
 
-        result = self._run_crew(agent, task)
+        result, usage = self._run_crew(agent, task)
 
         # Clean up any markdown fences the LLM might have added
         latex_content = result.strip()
@@ -109,7 +109,7 @@ Respond with ONLY the complete LaTeX source code. No markdown fences, no explana
                 "filename": "presentation.pdf",
             })
 
-        return {"artifacts": artifacts}
+        return {"artifacts": artifacts, "usage": usage}
 
     def _compile_pdf(self, manager: ProjectManager):
         """Try to compile presentation.tex to PDF. Returns path if successful, None otherwise."""

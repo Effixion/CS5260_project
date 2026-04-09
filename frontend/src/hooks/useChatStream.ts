@@ -3,10 +3,12 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { EventSourceParserStream } from "eventsource-parser/stream";
 import { api, type Message } from "@/lib/api";
+import { useProject } from "@/contexts/ProjectContext";
 
 interface AgentStatus {
   agent: string;
   status: "running" | "completed" | "error";
+  usage?: any;
 }
 
 interface StreamArtifact {
@@ -27,6 +29,7 @@ interface UseChatStreamReturn {
 }
 
 export function useChatStream(projectId: string): UseChatStreamReturn {
+  const { addSessionCost } = useProject();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [agentStatuses, setAgentStatuses] = useState<AgentStatus[]>([]);
@@ -97,11 +100,25 @@ export function useChatStream(projectId: string): UseChatStreamReturn {
               break;
 
             case "agent_status":
+              // 1. Define the status up here first
+              const status = data as unknown as AgentStatus;
+
+              // 2. Run the math/side-effects OUTSIDE the state updater
+              if (status.status === "completed" && status.usage) {
+                console.log(`Tokens for ${status.agent}:`, status.usage);
+                
+                if (typeof status.usage.cost_usd === 'number') {
+                  addSessionCost(status.usage.cost_usd);
+                } else if (typeof status.usage.cost === 'number') {
+                  addSessionCost(status.usage.cost);
+                }
+              }
+              
               setAgentStatuses((prev) => {
                 const existing = prev.findIndex(
-                  (s) => s.agent === data.agent
+                  (s) => s.agent === status.agent
                 );
-                const status = data as unknown as AgentStatus;
+                
                 if (existing >= 0) {
                   const updated = [...prev];
                   updated[existing] = status;
@@ -134,7 +151,7 @@ export function useChatStream(projectId: string): UseChatStreamReturn {
         setIsStreaming(false);
       }
     },
-    []
+    [addSessionCost]
   );
 
   const sendMessage = useCallback(
