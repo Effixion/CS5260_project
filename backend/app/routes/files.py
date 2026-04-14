@@ -105,4 +105,4 @@ async def get_artifact(project_id: str, filename: str):
 
     if not safe_path.exists():
         raise HTTPException(status_code=404, detail="Artifact not found")
-    return FileResponse(safe_path)
+    return FileResponse(safe_path, filename=safe_path.name)

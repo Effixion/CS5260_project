@@ -24,13 +24,41 @@ interface MessageListProps {
   onRetry: (messageId: string, newContent?: string) => void;
 }
 
-function FileRefChip({ filename }: { filename: string }) {
+function InlineFileRefChip({ filename }: { filename: string }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-md border border-white/20 bg-white/15 px-2 py-0.5 text-xs font-medium backdrop-blur-sm">
-      <FileText className="h-3 w-3 shrink-0 opacity-70" />
-      <span className="truncate max-w-[150px]">{filename}</span>
+    <span
+      className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-1.5 py-0.5 mx-0.5 align-middle text-xs font-medium text-foreground shadow-sm"
+      contentEditable={false}
+    >
+      <FileText className="h-3 w-3 shrink-0 text-primary" />
+      <span className="truncate max-w-[160px]">{filename}</span>
     </span>
   );
+}
+
+function renderContentWithRefs(content: string, fileRefs: string[]): React.ReactNode {
+  if (!fileRefs?.length) return content;
+  const pattern = /@"([^"]+)"|@(\S+)/g;
+  const out: React.ReactNode[] = [];
+  const seen = new Set<string>();
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(content)) !== null) {
+    const name = m[1] ?? m[2];
+    if (!fileRefs.includes(name)) continue;
+    if (m.index > last) out.push(content.slice(last, m.index));
+    out.push(<InlineFileRefChip key={`${m.index}-${name}`} filename={name} />);
+    seen.add(name);
+    last = m.index + m[0].length;
+  }
+  if (last < content.length) out.push(content.slice(last));
+
+  const orphaned = fileRefs.filter((r) => !seen.has(r));
+  orphaned.forEach((r, i) => {
+    out.push(i === 0 && out.length > 0 ? " " : "");
+    out.push(<InlineFileRefChip key={`orphan-${r}-${i}`} filename={r} />);
+  });
+  return out.length > 0 ? out : content;
 }
 
 function EditableUserMessage({
@@ -204,14 +232,9 @@ export function MessageList({
                   >
                     <ContextMenu>
                       <ContextMenuTrigger className="max-w-lg cursor-context-menu rounded-lg bg-primary px-4 py-3 text-sm text-primary-foreground">
-                          {msg.file_refs.length > 0 && (
-                            <div className="mb-2 flex flex-wrap gap-1">
-                              {msg.file_refs.map((ref) => (
-                                <FileRefChip key={ref} filename={ref} />
-                              ))}
-                            </div>
-                          )}
-                          <p className="whitespace-pre-wrap">{msg.content}</p>
+                        <p className="whitespace-pre-wrap">
+                          {renderContentWithRefs(msg.content, msg.file_refs)}
+                        </p>
                       </ContextMenuTrigger>
                       <ContextMenuContent>
                         <ContextMenuItem onClick={() => onRetry(msg.id)}>
@@ -244,14 +267,9 @@ export function MessageList({
                         : "border border-border bg-surface text-foreground"
                     }`}
                   >
-                    {msg.file_refs.length > 0 && (
-                      <div className="mb-2 flex flex-wrap gap-1">
-                        {msg.file_refs.map((ref) => (
-                          <FileRefChip key={ref} filename={ref} />
-                        ))}
-                      </div>
-                    )}
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
+                    <p className="whitespace-pre-wrap">
+                      {renderContentWithRefs(msg.content, msg.file_refs)}
+                    </p>
                   </div>
                 </motion.div>
               );

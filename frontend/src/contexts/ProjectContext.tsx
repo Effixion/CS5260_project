@@ -83,6 +83,7 @@ export function ProjectProvider({
       ]);
       setFiles(fileData);
       setArtifacts(projectData.artifacts);
+      setProject(projectData);
     } catch (error) {
       console.error("Failed to refresh files:", error);
     }

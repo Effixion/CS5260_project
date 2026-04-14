@@ -70,7 +70,13 @@ async def compile_tex(project_id: str, req: CompileRequest):
         "pdf_url": None,
     }
 
+    # Remove any stale PDF so success never reflects a prior run
+    if pdf_path.exists():
+        pdf_path.unlink()
+
     try:
+        log_text = ""
+        returncode = 0
         for _ in range(2):
             proc = subprocess.run(
                 ["pdflatex", "-interaction=nonstopmode", "presentation.tex"],
@@ -79,21 +85,38 @@ async def compile_tex(project_id: str, req: CompileRequest):
                 text=True,
                 timeout=30,
             )
-            log_text = proc.stdout or ""
+            log_text += (proc.stdout or "") + "\n"
+            returncode = proc.returncode
+            if proc.returncode != 0:
+                break
 
-        # Parse the final pass log
-        for line in log_text.split("\n"):
-            line = line.strip()
-            if line.startswith("!"):
-                result["errors"].append(line)
-            elif "LaTeX Warning:" in line:
-                result["warnings"].append(line)
-            elif re.match(r"(Over|Under)full \\[hv]box", line):
-                result["overfull_boxes"].append(line)
+        lines = log_text.split("\n")
+        for i, raw in enumerate(lines):
+            line = raw.rstrip()
+            stripped = line.strip()
+            if stripped.startswith("!"):
+                context = stripped
+                for j in range(i + 1, min(i + 4, len(lines))):
+                    nxt = lines[j].strip()
+                    if nxt.startswith("l."):
+                        context += f" ({nxt})"
+                        break
+                result["errors"].append(context)
+            elif stripped.startswith("Emergency stop") or stripped.startswith("Fatal error"):
+                result["errors"].append(stripped)
+            elif "LaTeX Warning:" in stripped:
+                result["warnings"].append(stripped)
+            elif re.match(r"(Over|Under)full \\[hv]box", stripped):
+                result["overfull_boxes"].append(stripped)
 
-        if pdf_path.exists():
+        if returncode == 0 and pdf_path.exists():
             result["success"] = True
             result["pdf_url"] = f"/projects/{project_id}/artifacts/presentation.pdf"
+        elif not result["errors"]:
+            tail = "\n".join(lines[-20:]).strip()
+            result["errors"].append(
+                f"pdflatex failed (exit {returncode}). Log tail:\n{tail}"
+            )
 
     except FileNotFoundError:
         result["errors"].append("pdflatex not installed on this system")

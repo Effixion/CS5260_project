@@ -11,7 +11,7 @@ AI-powered academic presentation generator using a multi-agent pipeline.
 
 - [Bun](https://bun.sh/) (JS runtime/package manager)
 - Python 3.12+ with `venv`
-- `pdflatex` and `pdftoppm` (for PDF generation and preview)
+- **Backend**: Docker (the image bundles LaTeX). For local dev without Docker, install TeX Live: `brew install --cask mactex-no-gui` on macOS, `apt install texlive-latex-extra texlive-fonts-recommended texlive-pictures` on Linux, or MiKTeX on Windows.
 
 ## Setup
 
@@ -23,7 +23,15 @@ bun install
 bun run dev
 ```
 
-### Backend
+### Backend (Docker — recommended for deployment)
+
+```bash
+cd backend
+docker build -t haitham-backend .
+docker run --rm -p 8000:8000 --env-file .env haitham-backend
+```
+
+### Backend (local venv, for development)
 
 ```bash
 cd backend

@@ -64,6 +64,7 @@ function extractContentAndRefs(editor: HTMLDivElement): {
       const ref = node.getAttribute("data-file-ref");
       if (ref) {
         refs.push(ref);
+        content += /\s/.test(ref) ? `@"${ref}"` : `@${ref}`;
       } else if (node.tagName === "BR") {
         content += "\n";
       } else {
