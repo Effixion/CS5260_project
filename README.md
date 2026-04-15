@@ -53,3 +53,4 @@ bun run dev
 |---|---|---|
 | `SESSION_STORAGE_PATH` | `./sessions` | Directory for file-backed session data |
 | `ANTHROPIC_API_KEY` | — | API key for Claude models |
+| `ALLOWED_ORIGINS` | `http://localhost:3000` | Comma-separated CORS allowlist for frontend origins |
