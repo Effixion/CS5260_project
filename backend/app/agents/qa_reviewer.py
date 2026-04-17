@@ -1,6 +1,5 @@
 import base64
 import json
-import os
 import re
 import subprocess
 from pathlib import Path
@@ -188,28 +187,19 @@ Respond with ONLY a valid JSON object (no markdown):
 
         return images
 
-    def _run_visual_qa(self, page_images: list[bytes]) -> dict:
-        """Send rendered slide images to a VLM for visual inspection."""
+    def _run_visual_qa(self, page_images: list[bytes]) -> tuple[dict, dict]:
+        """Send rendered slide images to Claude for visual inspection."""
         if not page_images:
             return {"visual_issues": [], "visual_summary": "No PDF pages to inspect."}, {}
 
         try:
-            from google.genai import types
-            from google import genai
+            from litellm import completion
 
-            api_key = os.environ.get("GEMINI_API_KEY", "")
-            if not api_key:
-                return {
-                    "visual_issues": [],
-                    "visual_summary": "Skipped: GEMINI_API_KEY not set.",
-                }, {}
+            from app.agents.factory import resolve_model
 
-            client = genai.Client(api_key=api_key)
+            model = resolve_model("qa_reviewer")
 
-            # Build multimodal content: prompt + all slide images
-            parts: list[types.PartUnion] = [
-                types.Part.from_text(
-                    """You are a presentation QA reviewer. I am showing you every slide of a Beamer PDF presentation rendered as images.
+            prompt_text = """You are a presentation QA reviewer. I am showing you every slide of a Beamer PDF presentation rendered as images.
 
 For EACH slide, check:
 1. Text overflow — is any text cut off at the edges or overlapping other elements?
@@ -228,44 +218,46 @@ Respond with ONLY a valid JSON object (no markdown):
 }
 
 If all slides look fine, return an empty visual_issues array."""
-                ),
-            ]
 
-            for i, img_bytes in enumerate(page_images):
-                parts.append(
-                    types.Part.from_bytes(data=img_bytes, mime_type="image/png")
-                )
+            content: list[dict] = [{"type": "text", "text": prompt_text}]
+            for img_bytes in page_images:
+                b64 = base64.b64encode(img_bytes).decode("utf-8")
+                content.append({
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{b64}"},
+                })
 
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=types.Content(role="user", parts=parts),
+            response = completion(
+                model=model,
+                messages=[{"role": "user", "content": content}],
             )
 
+            usage = getattr(response, "usage", None)
             vlm_usage = {
-                "total_tokens": response.usage_metadata.total_token_count if response.usage_metadata else 0,
-                "prompt_tokens": response.usage_metadata.prompt_token_count if response.usage_metadata else 0,
-                "completion_tokens": response.usage_metadata.candidates_token_count if response.usage_metadata else 0,
+                "total_tokens": getattr(usage, "total_tokens", 0) if usage else 0,
+                "prompt_tokens": getattr(usage, "prompt_tokens", 0) if usage else 0,
+                "completion_tokens": getattr(usage, "completion_tokens", 0) if usage else 0,
             }
 
             try:
                 prompt_cost, comp_cost = cost_per_token(
-                    model="gemini/gemini-2.5-flash", # LiteLLM uses provider/model syntax
+                    model=model,
                     prompt_tokens=vlm_usage["prompt_tokens"],
-                    completion_tokens=vlm_usage["completion_tokens"]
+                    completion_tokens=vlm_usage["completion_tokens"],
                 )
                 vlm_usage["cost_usd"] = prompt_cost + comp_cost
             except Exception:
                 vlm_usage["cost_usd"] = 0.0
 
-            response_text = response.text or ""
+            choices = getattr(response, "choices", None) or []
+            response_text = choices[0].message.content if choices else ""
+            response_text = response_text or ""
             # Strip markdown fences
             response_text = re.sub(r"^```(?:json)?\s*\n?", "", response_text.strip())
             response_text = re.sub(r"\n?```\s*$", "", response_text.strip())
 
             return json.loads(response_text), vlm_usage
 
-        except ImportError:
-            return {"visual_issues": [], "visual_summary": "Skipped: google-genai not installed."}, {}
         except Exception as e:
             return {"visual_issues": [], "visual_summary": f"Visual QA error: {e}"}, {}
 
