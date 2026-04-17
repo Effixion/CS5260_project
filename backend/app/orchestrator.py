@@ -59,19 +59,10 @@ IMPORTANT: Respond ONLY with a valid JSON object. No markdown, no code fences, n
 
 
 def _build_orchestrator_llm() -> LLM:
-    """Build the orchestrator LLM using the same config as agents."""
-    factory = AgentFactory()
-    config = factory.config
-    orch_config = config.get("orchestrator", config.get("default", {}))
-    model = orch_config.get("model", "anthropic/claude-sonnet-4-20250514")
+    """Build the orchestrator LLM from env vars (same resolution as agents)."""
+    from app.agents.factory import resolve_model
 
-    kwargs = {"model": model}
-    if "provider" in orch_config:
-        kwargs["provider"] = orch_config["provider"]
-    if "base_url" in orch_config:
-        kwargs["base_url"] = orch_config["base_url"]
-
-    return LLM(**kwargs)
+    return LLM(model=resolve_model("orchestrator"))
 
 
 def _format_messages_for_llm(messages: list[dict]) -> str:

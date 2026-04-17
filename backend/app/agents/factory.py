@@ -1,6 +1,4 @@
-import json
 import os
-from pathlib import Path
 
 from crewai import LLM
 
@@ -12,8 +10,6 @@ from app.agents.latex_author import LatexAuthorAgent
 from app.agents.qa_reviewer import QAReviewerAgent
 from app.agents.presenter import PresenterAgent
 
-CONFIG_PATH = Path(__file__).parent.parent.parent / "config" / "agent_models.json"
-
 AGENT_REGISTRY: dict[str, type[BaseAgent]] = {
     "strategist": StrategistAgent,
     "data_analyst": DataAnalystAgent,
@@ -24,32 +20,27 @@ AGENT_REGISTRY: dict[str, type[BaseAgent]] = {
 }
 
 
+def resolve_model(name: str) -> str:
+    """Resolve the model for a component from its env var.
+
+    Each component has its own env var: ORCHESTRATOR_MODEL, STRATEGIST_MODEL, etc.
+    API keys are picked up automatically by LiteLLM based on the provider
+    prefix: gemini/ → GEMINI_API_KEY, anthropic/ → ANTHROPIC_API_KEY,
+    openai/ → OPENAI_API_KEY, etc.
+    """
+    env_key = f"{name.upper()}_MODEL"
+    model = os.environ.get(env_key)
+    if not model:
+        raise ValueError(
+            f"Missing env var {env_key}. "
+            f"Set it to a LiteLLM model string (e.g. gemini/gemini-2.5-flash, anthropic/claude-sonnet-4-20250514)."
+        )
+    return model
+
+
 class AgentFactory:
-    def __init__(self):
-        self.config = self._load_config()
-
-    def _load_config(self) -> dict:
-        if CONFIG_PATH.exists():
-            return json.loads(CONFIG_PATH.read_text())
-        return {"default": {"model": "claude-sonnet-4-20250514"}, "agents": {}}
-
     def _build_llm(self, agent_name: str) -> LLM:
-        """Build a CrewAI LLM from config, merging agent overrides onto defaults."""
-        defaults = self.config.get("default", {})
-        overrides = self.config.get("agents", {}).get(agent_name, {})
-        merged = {**defaults, **{k: v for k, v in overrides.items() if v}}
-
-        model = merged.get("model", "claude-sonnet-4-20250514")
-
-        kwargs: dict = {"model": model}
-        if "provider" in merged:
-            kwargs["provider"] = merged["provider"]
-        if "base_url" in merged:
-            kwargs["base_url"] = merged["base_url"]
-        if "api_key_env" in merged:
-            kwargs["api_key"] = os.environ.get(merged["api_key_env"], "")
-
-        return LLM(**kwargs)
+        return LLM(model=resolve_model(agent_name))
 
     def create(self, agent_name: str) -> BaseAgent:
         cls = AGENT_REGISTRY.get(agent_name)

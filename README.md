@@ -52,5 +52,18 @@ bun run dev
 | Variable | Default | Description |
 |---|---|---|
 | `SESSION_STORAGE_PATH` | `./sessions` | Directory for file-backed session data |
-| `ANTHROPIC_API_KEY` | — | API key for Claude models |
 | `ALLOWED_ORIGINS` | `http://localhost:3000` | Comma-separated CORS allowlist for frontend origins |
+| **API Keys** | | |
+| `ANTHROPIC_API_KEY` | — | API key for Claude models (`anthropic/...`) |
+| `GEMINI_API_KEY` | — | API key for Gemini models (`gemini/...`) |
+| `OPENAI_API_KEY` | — | API key for OpenAI models (`openai/...`) |
+| **Agent Models** | | |
+| `ORCHESTRATOR_MODEL` | — | Model for the orchestrator |
+| `STRATEGIST_MODEL` | — | Model for the strategist agent |
+| `DATA_ANALYST_MODEL` | — | Model for the data analyst agent |
+| `PLOT_GENERATOR_MODEL` | — | Model for the plot generator agent |
+| `LATEX_AUTHOR_MODEL` | — | Model for the LaTeX author agent |
+| `QA_REVIEWER_MODEL` | — | Model for the QA reviewer agent |
+| `PRESENTER_MODEL` | — | Model for the presenter agent |
+
+Each agent requires its own model env var. Model names use the LiteLLM provider prefix format (e.g. `gemini/gemini-2.5-flash`, `anthropic/claude-sonnet-4-20250514`, `openai/gpt-4o`). The matching API key env var is resolved automatically based on the prefix — just set the key for the provider you're using.
