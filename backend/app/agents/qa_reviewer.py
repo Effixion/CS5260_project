@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from crewai import Agent as CrewAgent, Task
-from litellm import cost_per_token
 
 from app.agents.base import BaseAgent
 from app.storage import ProjectManager
+from app.usage_tracker import track_usage
 
 
 class QAReviewerAgent(BaseAgent):
@@ -227,36 +227,19 @@ If all slides look fine, return an empty visual_issues array."""
                     "image_url": {"url": f"data:image/png;base64,{b64}"},
                 })
 
-            response = completion(
-                model=model,
-                messages=[{"role": "user", "content": content}],
-            )
-
-            usage = getattr(response, "usage", None)
-            vlm_usage = {
-                "total_tokens": getattr(usage, "total_tokens", 0) if usage else 0,
-                "prompt_tokens": getattr(usage, "prompt_tokens", 0) if usage else 0,
-                "completion_tokens": getattr(usage, "completion_tokens", 0) if usage else 0,
-            }
-
-            try:
-                prompt_cost, comp_cost = cost_per_token(
+            with track_usage() as vlm_usage:
+                response = completion(
                     model=model,
-                    prompt_tokens=vlm_usage["prompt_tokens"],
-                    completion_tokens=vlm_usage["completion_tokens"],
+                    messages=[{"role": "user", "content": content}],
                 )
-                vlm_usage["cost_usd"] = prompt_cost + comp_cost
-            except Exception:
-                vlm_usage["cost_usd"] = 0.0
 
             choices = getattr(response, "choices", None) or []
             response_text = choices[0].message.content if choices else ""
             response_text = response_text or ""
-            # Strip markdown fences
             response_text = re.sub(r"^```(?:json)?\s*\n?", "", response_text.strip())
             response_text = re.sub(r"\n?```\s*$", "", response_text.strip())
 
-            return json.loads(response_text), vlm_usage
+            return json.loads(response_text), dict(vlm_usage)
 
         except Exception as e:
             return {"visual_issues": [], "visual_summary": f"Visual QA error: {e}"}, {}
@@ -345,10 +328,14 @@ If all slides look fine, return an empty visual_issues array."""
             json.dumps(review, indent=2).encode(),
         )
 
+        combined_usage = {
+            "prompt_tokens": (latex_usage.get("prompt_tokens", 0) or 0) + (visual_usage.get("prompt_tokens", 0) or 0),
+            "completion_tokens": (latex_usage.get("completion_tokens", 0) or 0) + (visual_usage.get("completion_tokens", 0) or 0),
+            "total_tokens": (latex_usage.get("total_tokens", 0) or 0) + (visual_usage.get("total_tokens", 0) or 0),
+            "cost_usd": (latex_usage.get("cost_usd", 0.0) or 0.0) + (visual_usage.get("cost_usd", 0.0) or 0.0),
+        }
+
         return {
-            "review": review, 
-            "usage": {
-                "latex_qa": latex_usage,
-                "visual_qa": visual_usage
-            }
+            "review": review,
+            "usage": combined_usage,
         }

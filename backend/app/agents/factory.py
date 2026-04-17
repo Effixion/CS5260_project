@@ -40,7 +40,9 @@ def resolve_model(name: str) -> str:
 
 class AgentFactory:
     def _build_llm(self, agent_name: str) -> LLM:
-        return LLM(model=resolve_model(agent_name))
+        # is_litellm=True forces CrewAI to route through LiteLLM rather than
+        # native provider SDKs — our usage/cost callback only fires on that path.
+        return LLM(model=resolve_model(agent_name), is_litellm=True)
 
     def create(self, agent_name: str) -> BaseAgent:
         cls = AGENT_REGISTRY.get(agent_name)

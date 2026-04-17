@@ -7,6 +7,7 @@ from crewai import LLM
 from app.storage import ProjectManager
 from app.agents import AgentFactory
 from app.models import Message
+from app.usage_tracker import track_usage
 
 STAGE_A_AGENTS = ["strategist", "data_analyst", "plot_generator"]
 STAGE_B_AGENTS = ["latex_author", "qa_reviewer", "presenter"]
@@ -62,7 +63,7 @@ def _build_orchestrator_llm() -> LLM:
     """Build the orchestrator LLM from env vars (same resolution as agents)."""
     from app.agents.factory import resolve_model
 
-    return LLM(model=resolve_model("orchestrator"))
+    return LLM(model=resolve_model("orchestrator"), is_litellm=True)
 
 
 def _format_messages_for_llm(messages: list[dict]) -> str:
@@ -147,10 +148,10 @@ async def _run_agents(
                 }
 
             usage = result.get("usage", {})
-            if usage:
+            if usage and (usage.get("total_tokens") or usage.get("cost_usd")):
                 if agent_name not in project["token_usage"]:
                     project["token_usage"][agent_name] = []
-                    
+
                 project["token_usage"][agent_name].append(usage)
 
                 manager.save_project(project)
@@ -212,7 +213,8 @@ async def handle_message(
     llm = _build_orchestrator_llm()
 
     try:
-        response_text = llm.call(messages=[{"role": "user", "content": full_prompt}])
+        with track_usage() as orch_usage:
+            response_text = llm.call(messages=[{"role": "user", "content": full_prompt}])
     except Exception as e:
         fallback_msg = Message(
             role="assistant",
@@ -223,6 +225,14 @@ async def handle_message(
         yield {"event": "message", "data": json.dumps(fallback_msg)}
         yield {"event": "done", "data": json.dumps({"project_status": project.get("status", "active")})}
         return
+
+    if orch_usage.get("total_tokens") or orch_usage.get("cost_usd"):
+        project.setdefault("token_usage", {}).setdefault("orchestrator", []).append(dict(orch_usage))
+        manager.save_project(project)
+        yield {
+            "event": "agent_status",
+            "data": json.dumps({"agent": "orchestrator", "status": "completed", "usage": dict(orch_usage)}),
+        }
 
     # Parse the LLM's decision
     decision = _parse_llm_response(response_text)
